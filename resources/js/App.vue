@@ -1,5 +1,23 @@
 <template>
-  <h1 class="text-3xl font-bold underline">Vue App</h1>
+  <header>
+    <ul class="flex flex-row gap-2 justify-center">
+      <li>
+        <router-link to="/">Home</router-link>
+      </li>
+      <li>
+        <router-link to="/about">About</router-link>
+      </li>
+      <li>
+        <router-link to="/contact">Contact</router-link>
+      </li>
+    </ul>
+  </header>
+  <div class="flex flex-row justify-center items-center mx-auto w-full h-screen">
+    <router-view/>
+  </div>
+  <footer class="flex flex-row justify-center">
+    Footer
+  </footer>
 </template>
 
 <script>
