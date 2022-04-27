@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::prefix('/post')->group(function () {
+  Route::get('', [PostController::class, 'show']);
+  Route::post('', [PostController::class, 'store']);
+});
 Route::any('{path}', function () {
-    return view('app');
+  return view('app');
 })->where('path', '.*');

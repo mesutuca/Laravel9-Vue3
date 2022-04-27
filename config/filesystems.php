@@ -24,7 +24,7 @@ return [
     | may even configure multiple disks of the same driver. Defaults have
     | been set up for each driver as an example of the required values.
     |
-    | Supported Drivers: "local", "ftp", "sftp", "s3"
+    | Supported Drivers: "local", "ftp", "sftp", "deneme"
     |
     */
 
@@ -44,8 +44,8 @@ return [
             'throw' => false,
         ],
 
-        's3' => [
-            'driver' => 's3',
+        'deneme' => [
+            'driver' => 'deneme',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),

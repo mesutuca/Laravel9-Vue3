@@ -1,10 +1,13 @@
 <template>
-  <h1>Home Page</h1>
+    <FileUpload/>
 </template>
 
 <script>
+import FileUpload from "../components/FileUpload";
+
 export default {
-  name: "Home"
+    name: "Home",
+    components: {FileUpload}
 }
 </script>
 
