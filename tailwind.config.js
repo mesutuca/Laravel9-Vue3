@@ -1,5 +1,6 @@
 // https://tailwindcss.com/docs/guides/laravel
 module.exports = {
+    mode: 'jit',
     content: [
         "./resources/**/*.blade.php",
         "./resources/**/*.js",
