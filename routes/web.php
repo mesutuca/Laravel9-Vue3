@@ -13,11 +13,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::prefix('/post')->group(function () {
-  Route::get('', [PostController::class, 'show']);
-  Route::post('', [PostController::class, 'store']);
+Route::controller(PostController::class)->group(function () {
+    Route::prefix('/post')->group(function () {
+        Route::get('', 'index');
+        Route::post('', 'store');
+    });
 });
+
 Route::any('{path}', function () {
-  return view('app');
+    return view('app');
 })->where('path', '.*');

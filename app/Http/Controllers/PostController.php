@@ -7,96 +7,111 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function index()
-  {
-    //
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    //
-  }
-
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param \Illuminate\Http\Request $request
-   * @return \Illuminate\Http\JsonResponse
-   */
-  public function store(Request $request)
-  {
-    $request->validate([
-      'name' => 'required|max:255',
-      'image' => 'required|mimes:jpg,jpeg,png|max:2048'
-    ]);
-    $post = new Post;
-
-    if ($request->file()) {
-
-      $file_name = time() . '_' . $request->file('image')->getClientOriginalName();
-      $file_path = $request->file('image')->storeAs('avatars', $file_name, 'public');
-
-      $post->name = $request->name;
-      $post->image = '/storage/' . $file_path;
-      $post->save();
-
-      return response()->json(['success' => 'File uploaded successfully.']);
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return Post::all();
     }
 
-  }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
 
-  /**
-   * Display the specified resource.
-   *
-   * @param \App\Models\Post $post
-   * @return \Illuminate\Http\Response
-   */
-  public function show(Post $post)
-  {
-    //
-  }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|max:255',
+            'image' => 'required|mimes:jpg,jpeg,png|max:2048'
+        ]);
+        $postControll = Post::where('slug', '=', $request->slug)->first();
+        /*
+          $file_name = time() . '_' . $request->slug . '.' . $request->file('image')->getClientOriginalExtension();
 
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param \App\Models\Post $post
-   * @return \Illuminate\Http\Response
-   */
-  public function edit(Post $post)
-  {
-    //
-  }
+                $type = $request->file('image')->move(public_path('uploads'), $file_name);
+                print_r($type);
+                exit();
+         */
+        if (!$postControll) {
+            $post = new Post;
+            if ($request->file()) {
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param \Illuminate\Http\Request $request
-   * @param \App\Models\Post $post
-   * @return \Illuminate\Http\Response
-   */
-  public function update(Request $request, Post $post)
-  {
-    //
-  }
+                $file_name = time() . '_' . $request->slug . '.' . $request->file('image')->getClientOriginalExtension();
+                $file_path = $request->file('image')->storeAs($request->slug, $file_name, 'public');
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param \App\Models\Post $post
-   * @return \Illuminate\Http\Response
-   */
-  public function destroy(Post $post)
-  {
-    //
-  }
+                $post->title = $request->title;
+                $post->slug = $request->slug;
+                $post->image = '/storage/' . $file_path;
+                $post->save();
+
+                return response()->json(['success' => 'File uploaded successfully.']);
+            }
+        } else {
+            return response()->json(['error' => 'slug record available'], 422);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param \App\Models\Post $post
+     * @return \Illuminate\Http\Response
+     */
+    public
+    function show(Post $post)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param \App\Models\Post $post
+     * @return \Illuminate\Http\Response
+     */
+    public
+    function edit(Post $post)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Post $post
+     * @return \Illuminate\Http\Response
+     */
+    public
+    function update(Request $request, Post $post)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param \App\Models\Post $post
+     * @return \Illuminate\Http\Response
+     */
+    public
+    function destroy(Post $post)
+    {
+        //
+    }
 }

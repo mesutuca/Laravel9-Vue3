@@ -12,7 +12,7 @@
       </li>
     </ul>
   </header>
-  <div class="flex flex-row justify-center items-center mx-auto w-full h-screen">
+  <div class="flex flex-row justify-center items-center mx-auto w-full">
     <router-view/>
   </div>
   <footer class="flex flex-row justify-center">

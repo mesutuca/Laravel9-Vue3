@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 </head>
 <body>
-<div id="app"></div>
+<div id="app" class="flex flex-col"></div>
 <script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>
