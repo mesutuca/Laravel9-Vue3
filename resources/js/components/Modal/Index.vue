@@ -8,10 +8,9 @@ export default {
 
 <template>
   <Transition name="modal">
-    <dialog v-if="show" class="modal-mask">
+    <div v-if="show" class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-
 
           <div class="modal-header">
             <slot name="header">default headeraa</slot>
@@ -30,7 +29,7 @@ export default {
 
         </div>
       </div>
-    </dialog>
+    </div>
   </Transition>
 </template>
 

@@ -10,10 +10,15 @@
       <li>
         <router-link to="/contact">Contact</router-link>
       </li>
+      <dark-mode/>
     </ul>
   </header>
   <div class="flex flex-row justify-center items-center mx-auto w-full">
-    <router-view/>
+    <router-view v-slot="slotProps">
+      <transition name="route" mode="out-in">
+        <component :is="slotProps.Component"></component>
+      </transition>
+    </router-view>
   </div>
   <footer class="flex flex-row justify-center">
     Footer
@@ -21,11 +26,28 @@
 </template>
 
 <script>
+import DarkMode from "./components/DarkMode";
+
 export default {
-  name: "App"
+  name: "App",
+  components: {DarkMode}
 }
 </script>
 
-<style scoped>
+<style>
+.route-enter-from,
+.route-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
 
+.route-enter-active,
+.route-leave-active {
+  transition: all 0.3s ease;
+}
+
+.route-enter-to,
+.route-leave-from {
+  transform: translateY(0);
+}
 </style>
