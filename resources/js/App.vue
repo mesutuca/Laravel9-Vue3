@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header class="bg-white dark:bg-black">
     <ul class="flex flex-row gap-2 justify-center">
       <li>
         <router-link to="/">Home</router-link>

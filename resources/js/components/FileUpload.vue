@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-slate-50 flex overflow-hidden h-[40rem]">
+  <div class="bg-slate-50 flex overflow-hidden h-[40rem] dark:bg-black">
     <div
         class="relative bg-white/40 w-64 sm:w-[43rem] lg:w-64 xl:w-[43rem] mx-auto border border-slate-100">
       <form @submit.prevent="handleSubmit"
