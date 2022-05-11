@@ -6,7 +6,7 @@
       <div
           class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
         <label for="" class="w-1/5">Upload</label>
-        <input @change="handleImageSelected" type="file" class="w-4/5 border rounded" multiple>
+        <input @change="handleImageSelected" type="file" accept="image/png, image/jpeg" class="w-4/5 border rounded" multiple>
       </div>
       <button class="border rounded bg-amber-500 p-2" type="submit">Upload</button>
       <div class="flex">
