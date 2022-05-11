@@ -25,8 +25,8 @@
   </table>
   <Teleport to="body">
     <modal :show="showModal" @close="showModal = false">
-      <template>
-        <img :src="ImageModal" alt="">
+      <template #header>
+        <h3>custom header</h3>
       </template>
     </modal>
   </Teleport>
@@ -34,7 +34,7 @@
 
 <script>
 import axios from "axios";
-import Modal from '../components/Modal'
+import Modal from '../components/Modal/Modal'
 
 export default {
   name: "Contact",
@@ -62,7 +62,6 @@ export default {
         .catch(error => {
           console.log(error)
         })
-
   }
 }
 </script>

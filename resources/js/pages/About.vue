@@ -1,10 +1,13 @@
 <template>
-  <h1>About Page</h1>
+  <MultiFileUpload/>
 </template>
 
 <script>
+import MultiFileUpload from "../components/MultiFileUpload";
+
 export default {
-  name: "About"
+  name: "About",
+  components: {MultiFileUpload}
 }
 </script>
 
