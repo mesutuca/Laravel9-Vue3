@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 Route::controller(PostController::class)->group(function () {
     Route::prefix('/post')->group(function () {
+        Route::get('', 'index');
+        Route::post('', 'store');
+    });
+});
+Route::controller(PostImageController::class)->group(function () {
+    Route::prefix('/postimage')->group(function () {
         Route::get('', 'index');
         Route::post('', 'store');
     });

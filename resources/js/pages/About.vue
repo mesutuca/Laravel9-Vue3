@@ -1,18 +1,19 @@
 <template>
-  <div class="home">
+  <div class="home max-w-7xl">
     <DropZone @drop.prevent="drop" @change="selectedFile"/>
-    <ImageList :items="dropzoneFile"/>
+    <ImageList :items="dropzoneFile" :progress="fileProgress"/>
   </div>
 </template>
 
 <script setup>
 import DropZone from "../components/upload/DropZone";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import ImageList from "../components/upload/ImageList";
+import axios from "axios";
 
 let dropzoneFile = ref([]);
+let fileProgress = ref({});
 const drop = (e) => {
-
   for (let i = 0; i < e.dataTransfer.files.length; i++) {
     const file = e.dataTransfer.files[i];
     let reader = new FileReader();
@@ -41,14 +42,30 @@ const selectedFile = () => {
     }, {once: true});
     reader.readAsDataURL(file)
   }
+}
+watch(dropzoneFile, (newVal) => {
+  newVal.forEach((item, index) => {
+    setData(item, index).then(res => console.log(res))
+  })
+}, {deep: true})
 
-
+async function setData(file, index) {
+  const form = new FormData();
+  form.append('image', file)
+  const response = await axios.post('/postimage', form, {
+    onUploadProgress: (progressEvent) => {
+      const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+      if (totalLength !== null) {
+        fileProgress.value[index] = Math.round((progressEvent.loaded * 100) / totalLength);
+      }
+    }
+  })
+  return response
 }
 </script>
 
 <style scoped lang="scss">
 .home {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

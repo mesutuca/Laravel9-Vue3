@@ -1,8 +1,8 @@
 <template>
   <TransitionGroup tag="ul" name="fade" class="container">
-    <li v-for="item in items" class="card" :key="item">
+    <li v-for="(item,index) in files" class="card" :key="item">
       <figure class="card-figure">
-        <img :src="item.data" :alt="item.name" class="card-image">
+        <img :src="item.data" :alt="item.name" class="card-image w-10 h-10">
         <figcaption class="card-caption">{{ getFileSize(item.size) }}</figcaption>
       </figure>
       <div class="card-body">
@@ -11,30 +11,47 @@
           <div>Last modified: boş</div>
           <div>File type: {{ item.type }}</div>
         </div>
-        <div class="progress top:margin-3">
+        <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+          <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+               :style="{width:progressBar(index)}"> {{ progressBar(index) }}
+          </div>
         </div>
       </div>
     </li>
   </TransitionGroup>
 </template>
+<script>
+import {getFileSize} from '../../utilities/file'
 
+export default {
+  name: 'ImageList',
+  props: ['items', 'progress'],
+  setup() {
+    return {
+      getFileSize
+    }
+  },
+  computed: {
+    files() {
+      return items.reverse()
+    }
+  }
+}
+</script>
+<!--
 <script setup>
-import {
-  getFileSize,
-  getFileName,
-  getFileType,
-  getFileDate,
-  getFileImage,
-  loadFileImage,
-  formatFileSize,
-  humanFileSize
-} from '../../utilities/file'
+import {getFileSize} from '../../utilities/file'
 
 const props = defineProps({
-  items: Object
+  items: Object,
+  progress: String
 })
-</script>
 
+function progressBar(index) {
+  return props.progress[index] + '%'
+}
+</script>
+-->
 <style scoped lang="scss">
 .card {
   position: relative;
