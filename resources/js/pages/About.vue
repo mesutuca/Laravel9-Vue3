@@ -5,63 +5,56 @@
   </div>
 </template>
 
-<script setup>
-import DropZone from "../components/upload/DropZone";
-import {ref, watch} from "vue";
-import ImageList from "../components/upload/ImageList";
+<script>
 import axios from "axios";
+import DropZone from "../components/upload/DropZone";
+import ImageList from "../components/upload/ImageList";
 
-let dropzoneFile = ref([]);
-let fileProgress = ref({});
-const drop = (e) => {
-  for (let i = 0; i < e.dataTransfer.files.length; i++) {
-    const file = e.dataTransfer.files[i];
-    let reader = new FileReader();
-    reader.addEventListener('load', () => {
-      dropzoneFile.value.push({
-        name: file.name,
-        data: reader.result,
-        type: file.type,
-        size: file.size
-      });
-    }, {once: true});
-    reader.readAsDataURL(file)
-  }
-};
-const selectedFile = () => {
-  for (let i = 0; i < document.querySelector(".dropzoneFile").files.length; i++) {
-    const file = document.querySelector(".dropzoneFile").files[i];
-    let reader = new FileReader();
-    reader.addEventListener('load', () => {
-      dropzoneFile.value.push({
-        name: file.name,
-        data: reader.result,
-        type: file.type,
-        size: file.size
-      });
-    }, {once: true});
-    reader.readAsDataURL(file)
-  }
-}
-watch(dropzoneFile, (newVal) => {
-  newVal.forEach((item, index) => {
-    setData(item, index).then(res => console.log(res))
-  })
-}, {deep: true})
-
-async function setData(file, index) {
-  const form = new FormData();
-  form.append('image', file)
-  const response = await axios.post('/postimage', form, {
-    onUploadProgress: (progressEvent) => {
-      const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
-      if (totalLength !== null) {
-        fileProgress.value[index] = Math.round((progressEvent.loaded * 100) / totalLength);
-      }
+export default {
+  data() {
+    return {
+      dropzoneFile: [],
+      fileProgress: [],
+      form : new FormData()
     }
-  })
-  return response
+  },
+  methods: {
+    drop(e) {
+      console.log(e)
+    },
+    selectedFile(e) {
+
+      const selectedFiles = e.target.files
+      if (!selectedFiles) {
+        return false
+      }
+      for (let i = 0; i < selectedFiles.length; i++) {
+        this.dropzoneFile.push(selectedFiles[i])
+      }
+      this.handleSubmit()
+    },
+    async handleSubmit() {
+      const config = {headers: {'content-type': 'multipart/form-data'}}
+
+      for (let i = 0; i < this.dropzoneFile.length; i++) {
+        this.form.append('image[]', this.dropzoneFile[i])
+      }
+
+      await axios.post('/postimage', this.form, config)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            this.error = error.response.data.errors;
+          })
+    }
+  },
+  components: {
+    DropZone,
+    ImageList
+  }
 }
+
 </script>
 
 <style scoped lang="scss">

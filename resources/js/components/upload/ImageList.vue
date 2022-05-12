@@ -1,5 +1,5 @@
 <template>
-  <TransitionGroup tag="ul" name="fade" class="container">
+<!--  <TransitionGroup tag="ul" name="fade" class="container">-->
     <li v-for="(item,index) in files" class="card" :key="item">
       <figure class="card-figure">
         <img :src="item.data" :alt="item.name" class="card-image w-10 h-10">
@@ -18,7 +18,7 @@
         </div>
       </div>
     </li>
-  </TransitionGroup>
+<!--  </TransitionGroup>-->
 </template>
 <script>
 import {getFileSize} from '../../utilities/file'
@@ -33,7 +33,17 @@ export default {
   },
   computed: {
     files() {
+      const items = this.items
       return items.reverse()
+    },
+    progressData() {
+      const progress = this.progress
+      return progress
+    }
+  },
+  methods: {
+    progressBar(index) {
+      return this.progressData[index] + '%'
     }
   }
 }
