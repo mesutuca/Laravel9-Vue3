@@ -74,6 +74,7 @@ const humanFileSize = (bytes, si = false, dp = 1) => {
 }
 
 export {
+    getFileDate,
     getFileSize,
     getFileName,
     getFileType,

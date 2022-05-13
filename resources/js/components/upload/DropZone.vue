@@ -6,13 +6,13 @@
       @drop.prevent="toggleActive"
       :class="{ 'active-dropzone': active }"
       class="dropzone cursor-pointer"
-      @click="$refs.file.click()"
+      @click="$refs.dropzoneFile.click()"
   >
     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Yükleme Yapmak için resmi sürükleyip bırakın</span>
       ya da tıklayın</p>
     <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG (MAX. 800x400px)</p>
     <label>Dosya Seç</label>
-    <input type="file" id="dropzoneFile" ref="file" class="dropzoneFile hidden" multiple accept="image/*"/>
+    <input type="file" id="dropzoneFile" ref="dropzoneFile" class="dropzoneFile hidden" multiple accept="image/*"/>
   </div>
 </template>
 

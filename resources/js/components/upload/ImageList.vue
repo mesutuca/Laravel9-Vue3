@@ -1,34 +1,50 @@
 <template>
-<!--  <TransitionGroup tag="ul" name="fade" class="container">-->
-    <li v-for="(item,index) in files" class="card" :key="item">
-      <figure class="card-figure">
-        <img :src="item.data" :alt="item.name" class="card-image w-10 h-10">
-        <figcaption class="card-caption">{{ getFileSize(item.size) }}</figcaption>
-      </figure>
-      <div class="card-body">
-        <h4 class="title">{{ item.name }}</h4>
-        <div class="between:flex secondary:text">
-          <div>Last modified: boş</div>
-          <div>File type: {{ item.type }}</div>
-        </div>
-        <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-          <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-               :style="{width:progressBar(index)}"> {{ progressBar(index) }}
-          </div>
+  <!--  <TransitionGroup tag="ul" name="fade" class="container">-->
+  <li v-for="file in files" :key="file.id" class="card">
+    <figure v-if="getFileType(file.item.type) === 'image'" class="card-figure">
+      <img :src="getFileImage(file.item)" :alt="file.item.name" class="card-image w-10 h-10">
+      <figcaption class="card-caption">{{ getFileSize(file.item.size) }}</figcaption>
+    </figure>
+    <div class="card-body">
+      <h4 class="title">{{ getFileName(file.item.name) }}</h4>
+      <div class="between:flex secondary:text">
+        <div>Last modified: {{ getFileDate(file.item.lastModified) }}</div>
+        <div>File type: {{ getFileType(file.item.type, 'format') }}</div>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+        <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+             :style="{ width: progressBar(file.id) }">{{ progressBar(file.id) }}
         </div>
       </div>
-    </li>
-<!--  </TransitionGroup>-->
+    </div>
+  </li>
+  <!--  </TransitionGroup>-->
 </template>
 <script>
-import {getFileSize} from '../../utilities/file'
+import {
+  getFileSize,
+  getFileName,
+  getFileType,
+  getFileDate,
+  getFileImage,
+  loadFileImage,
+  formatFileSize,
+  humanFileSize
+} from '../../utilities/file'
 
 export default {
   name: 'ImageList',
   props: ['items', 'progress'],
   setup() {
     return {
-      getFileSize
+      getFileSize,
+      getFileName,
+      getFileType,
+      getFileDate,
+      getFileImage,
+      loadFileImage,
+      formatFileSize,
+      humanFileSize
     }
   },
   computed: {
@@ -37,8 +53,8 @@ export default {
       return items.reverse()
     },
     progressData() {
-      const progress = this.progress
-      return progress
+      let prg = this.progress
+      return prg
     }
   },
   methods: {
