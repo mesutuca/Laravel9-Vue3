@@ -48,12 +48,10 @@ export default {
     async storeFiles(file, index) {
       const config = {
         headers: {'content-type': 'multipart/form-data'},
-        onUploadProgress: (progressEvent) => {
-          let context = this
-          const totalLength = progressEvent.lengthComputable ? progressEvent.total : null;
-          console.log("onUploadProgress", totalLength);
+        onUploadProgress: progressEvent => {
+          const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length')
           if (totalLength !== null) {
-            context.fileProgress[index] = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            this.fileProgress[index] = Math.round((progressEvent.loaded / progressEvent.total) * 100)
           }
         }
       }
