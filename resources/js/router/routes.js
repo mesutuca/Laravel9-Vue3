@@ -5,9 +5,15 @@ export default [
         component: () => import('../pages/Home'),
     },
     {
-        name: 'About',
-        path: '/about',
-        component: () => import('../pages/About')
+        name: 'Post',
+        path: '/Post',
+        component: () => import('../pages/Post'),
+        children: [
+            {
+                path: '',
+                component: () => import('../pages/ImageDetail'),
+            }
+        ]
     },
     {
         name: 'Contact',

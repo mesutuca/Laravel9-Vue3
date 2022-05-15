@@ -100,9 +100,13 @@ class PostImageController extends Controller
      * @param \App\Models\PostImage $postImage
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PostImage $postImage)
+    public function update(Request $request, $id)
     {
-        //
+        $data = PostImage::find($id);
+
+        return PostImage::where('id', $id)->update([
+            'status' => $request->status
+        ]);
     }
 
     /**

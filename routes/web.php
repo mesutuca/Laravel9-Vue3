@@ -15,17 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::controller(PostController::class)->group(function () {
-    Route::prefix('/post')->group(function () {
-        Route::get('', 'index');
-        Route::post('', 'store');
-    });
+    Route::resource('/posts', PostController::class);
 });
 Route::controller(PostImageController::class)->group(function () {
-    Route::prefix('/postimage')->group(function () {
-        Route::get('', 'index');
-        Route::post('', 'store');
-        Route::delete('/{id}', 'destroy');
-    });
+    Route::resource('/postimage', PostImageController::class);
+
+//    Route::prefix('/postimage')->group(function () {
+//        Route::get('', 'index');
+//        Route::post('', 'store');
+//        Route::delete('/{id}', 'destroy');
+//        Route::put('/{id}', 'update');
+//    });
 });
 
 Route::any('{path}', function () {
