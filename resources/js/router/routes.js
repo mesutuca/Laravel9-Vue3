@@ -15,6 +15,11 @@ export default [
         component: () => import('../pages/Contact')
     },
     {
+        name: 'Deneme',
+        path: '/Deneme',
+        component: () => import('../pages/Deneme')
+    },
+    {
         name: 'Error',
         path: '/:pathMatch(.*)*',
         redirect: '/'

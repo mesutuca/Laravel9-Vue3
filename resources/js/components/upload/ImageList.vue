@@ -1,65 +1,68 @@
 <template>
-  <!--  <TransitionGroup tag="ul" name="fade" class="container">-->
-  <li v-for="file in files" :key="file.id" class="card">
-    <figure v-if="getFileType(file.item.type) === 'image'" class="card-figure">
-      <img :src="getFileImage(file.item)" :alt="file.item.name" class="card-image w-10 h-10">
-      <figcaption class="card-caption">{{ getFileSize(file.item.size) }}</figcaption>
-    </figure>
-    <div class="card-body">
-      <h4 class="title">{{ getFileName(file.item.name) }}</h4>
-      <div class="between:flex secondary:text">
-        <div>Last modified: {{ getFileDate(file.item.lastModified) }}</div>
-        <div>File type: {{ getFileType(file.item.type, 'format') }}</div>
-      </div>
-      <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-        <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
-             :style="{ width: progressBar(file.id) }">{{ progressBar(file.id) }}
+  <section class="relative py-16 bg-blueGray-50">
+    <div class="w-full mb-12 px-4">
+      <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-pink-900 text-white">
+        <div class="rounded-t mb-0 px-4 py-3 border-0">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1 ">
+              <h3 class="font-semibold text-lg text-white">İmage Upload</h3>
+            </div>
+          </div>
+        </div>
+        <div class="block w-full overflow-x-auto">
+          <table class="items-center w-full bg-transparent border-collapse">
+            <thead>
+            <tr>
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">İD</th>
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">GÖRSEL</th>
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">RESİM ADI</th>
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">SIRALAMA</th>
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">KAYIT TARİHİ</th>
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">DURUM</th>
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">İŞLEM</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(file,index) in files" :key="file.id">
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ index }}</td>
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                <img class="h-12 w-12 bg-white rounded-full border" :src="file.src" :alt="file.title" height="70">
+              </td>
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ file.title }}</td>
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">0</td>
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">a</td>
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                <div class="flex items-center justify-center w-full">
+                  <div class="form-check form-switch">
+                    <input v-model="file.status" false-value="off" true-value="on" class="form-check-input appearance-none w-9 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm" type="checkbox" role="switch">
+                  </div>
+                </div>
+              </td>
+              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                <button class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100" @click="$emit('deleteFile',file.id)">Sil</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-  </li>
-  <!--  </TransitionGroup>-->
+  </section>
+
 </template>
 <script>
-import {
-  getFileSize,
-  getFileName,
-  getFileType,
-  getFileDate,
-  getFileImage,
-  loadFileImage,
-  formatFileSize,
-  humanFileSize
-} from '../../utilities/file'
-
 export default {
   name: 'ImageList',
-  props: ['items', 'progress'],
-  setup() {
-    return {
-      getFileSize,
-      getFileName,
-      getFileType,
-      getFileDate,
-      getFileImage,
-      loadFileImage,
-      formatFileSize,
-      humanFileSize
-    }
-  },
+  props: ['items'],
   computed: {
     files() {
       const items = this.items
-      return items.reverse()
-    },
-    progressData() {
-      let prg = this.progress
-      return prg
+      return items
     }
   },
   methods: {
-    progressBar(index) {
-      return this.progressData[index] + '%'
+    deleteFile(id) {
+      console.log(id)
     }
   }
 }
@@ -79,6 +82,18 @@ function progressBar(index) {
 </script>
 -->
 <style scoped lang="scss">
+.form-check-input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22-4 -4 8 8%22%3E%3Ccircle r=%223%22 fill=%22%23fff%22/%3E%3C/svg%3E");
+  background-position: 0;
+  transition: background-position .15s ease-in-out;
+
+  &:checked {
+    background-position: 100%;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+}
+
 .card {
   position: relative;
   display: flex;

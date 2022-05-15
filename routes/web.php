@@ -24,6 +24,7 @@ Route::controller(PostImageController::class)->group(function () {
     Route::prefix('/postimage')->group(function () {
         Route::get('', 'index');
         Route::post('', 'store');
+        Route::delete('/{id}', 'destroy');
     });
 });
 

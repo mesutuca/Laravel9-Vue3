@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\PostStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,11 +15,9 @@ return new class extends Migration {
     {
         Schema::create('post_images', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('originalname');
-            $table->string('mimetype');
-            $table->string('path');
-            $table->string('size');
+            $table->string('title');
+            $table->string('file_name');
+            $table->enum('status', ['on', 'off'])->default('on');
             $table->timestamps();
         });
     }
