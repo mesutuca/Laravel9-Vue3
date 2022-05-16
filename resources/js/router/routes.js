@@ -1,3 +1,5 @@
+import API from "../services";
+
 export default [
     {
         name: 'home',
@@ -5,16 +7,20 @@ export default [
         component: () => import('../pages/Home'),
     },
     {
-        name: 'post:id',
+        name: 'categori',
+        path: '/categoies',
+        component: () => import('../pages/Categorie/List'),
+    },
+    {
+        name: 'post',
         path: '/post',
-        component: () => import('../pages/Post'),
-        children: [
-            {
-                path: ':id',
-                name:'postdetail',
-                component: () => import('../pages/ImageDetail'),
-            }
-        ]
+        component: () => import('../pages/Post/List'),
+    },
+    {
+        name: 'postdetail',
+        path: '/post/:id',
+        component: () => import('../pages/Post/Detail'),
+        props: true
     },
     {
         name: 'contact',
