@@ -5,6 +5,9 @@
         <router-link to="/">Home</router-link>
       </li>
       <li>
+        <router-link to="/categoies">Categori</router-link>
+      </li>
+      <li>
         <router-link to="/post">Post</router-link>
       </li>
       <li>
@@ -14,11 +17,12 @@
     </ul>
   </header>
   <div class="flex flex-row justify-center items-center mx-auto w-full">
-    <router-view v-slot="{ Component, route }">
+    <router-view/>
+    <!--<router-view v-slot="{ Component, route }">
       <transition name="route" mode="out-in">
         <component :is="Component" :key="route.path"/>
       </transition>
-    </router-view>
+    </router-view>-->
   </div>
   <footer class="flex flex-row justify-center">
     <div class="widget">

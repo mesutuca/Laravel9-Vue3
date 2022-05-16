@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import FileUpload from "../components/FileUpload";
+import FileUpload from "../components/FileUpload/FileUpload";
 
 export default {
   name: "Home",

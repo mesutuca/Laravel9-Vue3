@@ -21,14 +21,13 @@
     </tr>
     </tbody>
   </table>
-  <router-view/>
 </template>
 
 <script>
-import API from "../services";
+import API from "../../services";
 
 export default {
-  name: "Post",
+  name: "Posts",
   data() {
     return {
       getPost: [],

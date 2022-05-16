@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import slugWidget from "./slugWidget";
+import slugWidget from "./../slugWidget";
 import axios from "axios";
 
 
@@ -74,7 +74,7 @@ export default {
       form.append('title', this.title)
       form.append('slug', this.slug)
       form.append('image', this.imageFile)
-      await axios.post('/post', form, config)
+      await axios.post('/posts', form, config)
           .then(response => {
             console.log(response)
           })
