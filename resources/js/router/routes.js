@@ -1,32 +1,33 @@
 export default [
     {
-        name: 'Home',
+        name: 'home',
         path: '/',
         component: () => import('../pages/Home'),
     },
     {
-        name: 'Post',
-        path: '/Post',
+        name: 'post:id',
+        path: '/post',
         component: () => import('../pages/Post'),
         children: [
             {
-                path: '',
+                path: ':id',
+                name:'postdetail',
                 component: () => import('../pages/ImageDetail'),
             }
         ]
     },
     {
-        name: 'Contact',
+        name: 'contact',
         path: '/contact',
         component: () => import('../pages/Contact')
     },
     {
-        name: 'Deneme',
-        path: '/Deneme',
+        name: 'deneme',
+        path: '/deneme',
         component: () => import('../pages/Deneme')
     },
     {
-        name: 'Error',
+        name: 'error',
         path: '/:pathMatch(.*)*',
         redirect: '/'
     }

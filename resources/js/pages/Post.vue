@@ -13,10 +13,15 @@
       <th>{{ post.id }}</th>
       <td>{{ post.title }}</td>
       <td>{{ post.slug }}</td>
-      <td>nnn</td>
+      <td>
+        <router-link :to="{name:'postdetail',params:{id:post.id}}"
+                     class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100">Resimler
+        </router-link>
+      </td>
     </tr>
     </tbody>
   </table>
+  <router-view/>
 </template>
 
 <script>
