@@ -10,6 +10,13 @@ export default [
         name: 'categori',
         path: '/categoies',
         component: () => import('../pages/Categorie/List'),
+        children: [
+            {
+                name: 'newcategori',
+                path: 'newcategori',
+                component: () => import('../pages/Categorie/Add'),
+            }
+        ]
     },
     {
         name: 'post',

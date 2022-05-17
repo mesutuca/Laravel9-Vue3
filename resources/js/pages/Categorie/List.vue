@@ -1,22 +1,30 @@
 <template>
-  <table>
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>TİTLE</th>
-      <th>SLUG</th>
-      <th>LANGUAGE</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr v-for="(categori,index) in getData" :key="index">
-      <td>{{ categori.id }}</td>
-      <td>{{ categori.title }}</td>
-      <td>{{ categori.slug }}</td>
-      <td>{{ categori.language }}</td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="flex flex-col">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>TİTLE</th>
+        <th>SLUG</th>
+        <th>LANGUAGE</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(categori,index) in getData" :key="index">
+        <td>{{ categori.id }}</td>
+        <td>{{ categori.title }}</td>
+        <td>{{ categori.slug }}</td>
+        <td>{{ categori.language }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+    <router-link :to="{name:'newcategori'}">
+      Kategori Ekle
+    </router-link>
+
+    <router-view/>
+  </div>
 </template>
 
 <script>

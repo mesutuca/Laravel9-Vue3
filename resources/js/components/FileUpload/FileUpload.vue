@@ -41,6 +41,12 @@ import axios from "axios";
 
 export default {
   name: "FileUpload",
+  props: {
+    apiUrl: {
+      type: String,
+      required: true
+    }
+  },
   components: {
     slugWidget
   },
@@ -74,7 +80,7 @@ export default {
       form.append('title', this.title)
       form.append('slug', this.slug)
       form.append('image', this.imageFile)
-      await axios.post('/posts', form, config)
+      await axios.post(this.apiUrl, form, config)
           .then(response => {
             console.log(response)
           })

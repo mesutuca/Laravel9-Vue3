@@ -1,5 +1,5 @@
 <template>
-  <FileUpload/>
+  <FileUpload api-url="/posts"/>
 </template>
 
 <script>
