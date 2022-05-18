@@ -10,7 +10,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(categori,index) in getData" :key="index">
+      <tr v-for="(categori,index) in getData" :key="index" @dblclick="dbleclick(categori)">
         <td>{{ categori.id }}</td>
         <td>{{ categori.title }}</td>
         <td>{{ categori.slug }}</td>
@@ -41,6 +41,10 @@ export default {
   methods: {
     showpage() {
       this.show = !this.show
+    },
+    dbleclick(data) {
+      this.$router.push({name: 'categoridetail', params: {id: data.id}})
+      this.$root.$emit('setMessageTags', data)
     }
   },
   async created() {

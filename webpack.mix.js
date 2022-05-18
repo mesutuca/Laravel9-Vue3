@@ -20,3 +20,4 @@ mix.js('resources/js/app.js', 'public/js')
 
 mix.browserSync('http://laravelvue.locale/')
 mix.disableSuccessNotifications()
+mix.disableNotifications()

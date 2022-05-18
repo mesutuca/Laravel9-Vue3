@@ -1,5 +1,3 @@
-import API from "../services";
-
 export default [
     {
         name: 'home',
@@ -17,6 +15,12 @@ export default [
                 component: () => import('../pages/Categorie/Add'),
             }
         ]
+    },
+    {
+        name: 'categoridetail',
+        path: '/categoies/:id',
+        component: () => import('../pages/Categorie/Detail'),
+        props: true
     },
     {
         name: 'post',

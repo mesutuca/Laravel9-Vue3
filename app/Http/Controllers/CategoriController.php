@@ -37,7 +37,8 @@ class CategoriController extends Controller
     {
         $request->validate([
             'title' => 'required|max:255',
-            'image' => 'required|mimes:jpg,jpeg,png|max:8192'
+            'image' => 'required|mimes:jpg,jpeg,png|max:8192',
+            'language' => 'required'
         ]);
         $categoryControll = Categori::where('slug', '=', $request->slug)->first();
         /*
@@ -56,6 +57,7 @@ class CategoriController extends Controller
 
                 $post->title = $request->title;
                 $post->slug = $request->slug;
+                $post->language = $request->language;
                 $post->image = '/storage/' . $file_path;
                 $post->save();
 
@@ -70,11 +72,17 @@ class CategoriController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\Categori $categori
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Categori $categori)
+    public function show($id)
     {
-        //
+        $data = Categori::find($id);
+        if ($data) {
+            return response()->json($data);
+        }
+        return response()->json([
+            'message' => 'Record not found.'
+        ], 404);
     }
 
     /**

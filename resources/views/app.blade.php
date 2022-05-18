@@ -9,6 +9,6 @@
 </head>
 <body>
 <div id="app" class="flex flex-col dark:bg-slate-900 dark:text-white"></div>
-<script src="{{asset('js/app.js')}}"></script>
+<script src="{{mix('js/app.js')}}"></script>
 </body>
 </html>
