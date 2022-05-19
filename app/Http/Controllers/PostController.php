@@ -37,7 +37,7 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|max:255',
-            'image' => 'required|mimes:jpg,jpeg,png|max:2048'
+            'image' => 'required|mimes:jpg,jpeg,png'
         ]);
         $postControll = Post::where('slug', '=', $request->slug)->first();
         /*
@@ -97,10 +97,14 @@ class PostController extends Controller
      * @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
-    public
-    function update(Request $request, Post $post)
+    public function update(Request $request, $id)
     {
-        //
+        $id;
+//        $data = PostImage::find($id);
+//
+//        return PostImage::where('id', $id)->update([
+//            'status' => $request->status
+//        ]);
     }
 
     /**

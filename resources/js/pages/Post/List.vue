@@ -1,22 +1,30 @@
 <template>
-  <table>
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>TİTLE</th>
-      <th>SLUG</th>
-      <th>LANGUAGE</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr v-for="(categori,index) in getData" :key="index">
-      <td>{{ categori.id }}</td>
-      <td>{{ categori.title }}</td>
-      <td>{{ categori.slug }}</td>
-      <td>{{ categori.language }}</td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="flex flex-col">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>TİTLE</th>
+        <th>SLUG</th>
+        <th>LANGUAGE</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(post,index) in getData" :key="index" @dblclick="dbleclick(post)">
+        <td>{{ post.id }}</td>
+        <td>{{ post.title }}</td>
+        <td>{{ post.slug }}</td>
+        <td>{{ post.language }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+    <router-link :to="{name:'newpost'}">
+      Kategori Ekle
+    </router-link>
+
+    <router-view/>
+  </div>
 </template>
 
 <script>
@@ -26,16 +34,18 @@ export default {
   name: "List",
   data() {
     return {
-      getData: null,
+      getData: [],
+    }
+  },
+  methods: {
+    dbleclick(data) {
+      this.$router.push({name: 'postdetail', params: {id: data.id}})
     }
   },
   async created() {
-    await API.get('/categories')
+    await API.get('/posts')
         .then(res => {
           this.getData = res.data
-        })
-        .catch(err => {
-          console.log(err)
         })
   }
 }

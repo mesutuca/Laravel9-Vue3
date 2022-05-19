@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-slate-50 flex overflow-hidden h-[40rem] dark:bg-black">
+  <div class="bg-slate-50 flex overflow-hidden dark:bg-black">
     <div
         class="relative bg-white/40 w-64 sm:w-[43rem] lg:w-64 xl:w-[43rem] mx-auto border border-slate-100">
       <form @submit.prevent="handleSubmit"
@@ -19,7 +19,7 @@
             <label for="" class="w-1/5">Title</label>
             <input type="text" class="w-4/5 border rounded" v-model="title">
           </div>
-          <slug-widget :title="title" url="http://localhost:8080" subdirectory="/category/" @slug-changed="updateSlug"/>
+          <slug-widget :title="title" url="http://localhost:8080" @slug-changed="updateSlug"/>
 
         </div>
         <div

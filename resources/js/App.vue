@@ -11,6 +11,9 @@
         <router-link to="/post">Post</router-link>
       </li>
       <li>
+        <router-link to="/deneme">Deneme</router-link>
+      </li>
+      <li>
         <router-link to="/contact">Contact</router-link>
       </li>
       <dark-mode/>

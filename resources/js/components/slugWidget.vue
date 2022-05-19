@@ -9,8 +9,8 @@
       </svg>
     </div>
     <div class="url-wrapper">
-      <span class="rout-url">{{ url }}</span>
-      <span class="subdirectoy-url">{{ subdirectory }}</span>
+      <span class="rout-url">{{ domainUrl }}</span>
+      <span class="subdirectoy-url" v-if="subdirectory">{{ subdirectory }}</span>
       <span class="slug" v-show="slug && !isEditing">{{ slug }}</span>
       <input class="border" type="text" v-show="isEditing" v-model="customSlug"/>
     </div>
@@ -29,13 +29,9 @@ Slug.defaults.mode = 'rfc3986'
 export default {
   name: "slugWidget",
   props: {
-    url: {
-      type: String,
-      required: true
-    },
     subdirectory: {
       type: String,
-      required: true
+      required: false
     },
     title: {
       type: String,
@@ -44,6 +40,7 @@ export default {
   },
   data: function () {
     return {
+      domainUrl: process.env.MIX_APP_URL,
       slug: this.convertTitle(),
       isEditing: false,
       customSlug: '',

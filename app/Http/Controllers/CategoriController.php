@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoriController extends Controller
 {
@@ -41,6 +42,7 @@ class CategoriController extends Controller
             'language' => 'required'
         ]);
         $categoryControll = Categori::where('slug', '=', $request->slug)->first();
+        $store = '/storage/';
         /*
           $file_name = time() . '_' . $request->slug . '.' . $request->file('image')->getClientOriginalExtension();
 
@@ -50,19 +52,14 @@ class CategoriController extends Controller
          */
         if (!$categoryControll) {
             $post = new Categori();
-            if ($request->file()) {
 
-                $file_name = time() . '_' . $request->slug . '.' . $request->file('image')->getClientOriginalExtension();
-                $file_path = $request->file('image')->storeAs($request->slug, $file_name, 'public');
+            $post->title = $request->title;
+            $post->slug = $request->slug;
+            $post->language = $request->language;
+            $post->image = $store . $this->uploadFile($request->slug, $request->image);
+            $post->save();
 
-                $post->title = $request->title;
-                $post->slug = $request->slug;
-                $post->language = $request->language;
-                $post->image = '/storage/' . $file_path;
-                $post->save();
-
-                return response()->json(['success' => 'File uploaded successfully.']);
-            }
+            return response()->json(['success' => 'File uploaded successfully.']);
         } else {
             return response()->json(['error' => 'slug record available'], 422);
         }
@@ -103,19 +100,46 @@ class CategoriController extends Controller
      * @param \App\Models\Categori $categori
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Categori $categori)
+    public function update(Request $request, $id)
     {
-        //
+        $data = Categori::find($id);
+
+        return Categori::where('id', $id)->update([
+            'status' => $request->status
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Categori $categori
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Categori $categori)
+    public function destroy($id)
     {
-        //
+        $Image = Categori::find($id);
+        $image_path = $Image->image;
+        $deleteImage = unlink($image_path);
+        if ($deleteImage) {
+            Categori::destroy($id);
+            return response()->json([
+                'message' => 'Fotoğraf Silindi'
+            ]);
+        }
+        return null;
+        // if(Storage::delete($data->filename)) {
+        //     $data->delete();
+        //  }
+    }
+
+    protected function uploadFile($slug, $image)
+    {
+        $originalFileName = $image->getClientOriginalName();
+        $extension = $image->getClientOriginalExtension();
+        $fileNameOnly = pathinfo($originalFileName, PATHINFO_FILENAME);
+        $fileName = Str::slug($fileNameOnly) . "-" . time() . "." . $extension;
+
+        $uploadedFileName = $image->storeAs($slug, $fileName, 'public');
+        return $uploadedFileName;
     }
 }

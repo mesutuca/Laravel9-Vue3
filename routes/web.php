@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::apiResources([
     '/categories' => CategoriController::class,
     '/posts' => PostController::class,
-    '/postimage' => PostController::class,
+    '/postimage' => PostImageController::class,
 ]);
 
 

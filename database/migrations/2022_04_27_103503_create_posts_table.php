@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->string('image');
+            $table->enum('language', ['tr', 'en', 'ar'])->default('tr');
+            $table->enum('status', ['on', 'off'])->default('on');
             $table->timestamps();
         });
     }

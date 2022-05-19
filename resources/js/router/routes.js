@@ -26,6 +26,13 @@ export default [
         name: 'post',
         path: '/post',
         component: () => import('../pages/Post/List'),
+        children: [
+            {
+                name: 'newpost',
+                path: 'newpost',
+                component: () => import('../pages/Post/Add'),
+            }
+        ]
     },
     {
         name: 'postdetail',

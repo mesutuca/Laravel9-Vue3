@@ -2,7 +2,7 @@
   <div class="home max-w-7xl">
     <DropZone @drop.prevent="imagesInserted" @change="imagesInserted"/>
     <ProgresBar :progress="progress" v-if="isUploading"/>
-    <ImageList :items="uploadedImages" @deleteFile="ImageDetele"/>
+    <ImageList :items="uploadedImages" @deleteFile="ImageDetele" @statusChange="statusChange"/>
   </div>
 </template>
 
@@ -37,6 +37,9 @@ export default {
         })
   },
   methods: {
+    statusChange(file) {
+      API.put(this.apiUrl + '/' + file.id, file)
+    },
     ImageDetele(id) {
       // console.log(this.uploadedImages.target)
       // console.log(id)
