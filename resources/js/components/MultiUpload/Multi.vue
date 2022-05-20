@@ -40,13 +40,13 @@ export default {
     statusChange(file) {
       API.put(this.apiUrl + '/' + file.id, file)
     },
-    ImageDetele(id) {
+    ImageDetele(index,id) {
       // console.log(this.uploadedImages.target)
       // console.log(id)
       API.delete(this.apiUrl + '/' + id)
           .then(res => {
             if (res.status === 200) {
-              this.uploadedImages.splice(this.uploadedImages.indexOf(id), 1);
+              this.uploadedImages.splice(this.uploadedImages.indexOf(index), 1);
             }
           })
           .catch(err => {

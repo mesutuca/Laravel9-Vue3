@@ -31,6 +31,15 @@
             </select>
           </div>
         </div>
+        <div v-if="additionalInput"
+            class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
+          <div class="flex flex-row w-full">
+            <label for="" class="w-1/5">Categori</label>
+            <select class="w-4/5 border rounded">
+              <option v-for="(cat,index) in dynamicModel" :key="index" :value="cat.id">{{ cat.title }}</option>
+            </select>
+          </div>
+        </div>
         <div
             class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
           <label for="" class="w-1/5">Upload</label>
@@ -46,6 +55,7 @@
 <script>
 import slugWidget from "./../slugWidget";
 import axios from "axios";
+import API from "../../services";
 
 
 export default {
@@ -54,6 +64,10 @@ export default {
     apiUrl: {
       type: String,
       required: true
+    },
+    additionalInput: {
+      type: Boolean,
+      required: false,
     }
   },
   components: {
@@ -84,7 +98,18 @@ export default {
       ],
     }
   },
+  created() {
+    if (this.additionalInput) {
+      API.get('/categories')
+          .then(res => {
+            this.dynamicModel(res.data)
+          })
+    }
+  },
   methods: {
+    dynamicModel(data) {
+
+    },
     updateSlug: function (val) {
       this.slug = val;
     },
@@ -103,6 +128,9 @@ export default {
       const form = new FormData();
       form.append('title', this.title)
       form.append('slug', this.slug)
+      if (this.additionalInput) {
+        // form.append('cat_id', this.)
+      }
       form.append('language', this.language)
       form.append('image', this.imageFile)
       await axios.post(this.apiUrl, form, config)

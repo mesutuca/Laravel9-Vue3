@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\Categori;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('image');
             $table->enum('language', ['tr', 'en', 'ar'])->default('tr');
             $table->enum('status', ['on', 'off'])->default('on');
+            $table->foreignIdFor(Categori::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

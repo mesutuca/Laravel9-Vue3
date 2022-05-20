@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Categori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CategoriController extends Controller
@@ -117,19 +119,22 @@ class CategoriController extends Controller
      */
     public function destroy($id)
     {
+
         $Image = Categori::find($id);
-        $image_path = $Image->image;
-        $deleteImage = unlink($image_path);
-        if ($deleteImage) {
+
+        $folder_path = public_path() . '/storage/' . $Image->slug;
+        $delete_folter = File::deleteDirectory($folder_path);
+
+        if ($delete_folter) {
             Categori::destroy($id);
             return response()->json([
                 'message' => 'Fotoğraf Silindi'
             ]);
         }
         return null;
-        // if(Storage::delete($data->filename)) {
-        //     $data->delete();
-        //  }
+//        if (Storage::delete($data->filename)) {
+//            $data->delete();
+//        }
     }
 
     protected function uploadFile($slug, $image)
