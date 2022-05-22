@@ -19,7 +19,7 @@
             <label for="" class="w-1/5">Title</label>
             <input type="text" class="w-4/5 border rounded" v-model="title">
           </div>
-          <slug-widget :title="title" url="http://localhost:8080" @slug-changed="updateSlug"/>
+          <slug-widget :title="title" :subdirectory="catID" @slug-changed="updateSlug"/>
 
         </div>
         <div
@@ -32,11 +32,11 @@
           </div>
         </div>
         <div v-if="additionalInput"
-            class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
+             class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
           <div class="flex flex-row w-full">
             <label for="" class="w-1/5">Categori</label>
-            <select class="w-4/5 border rounded">
-              <option v-for="(cat,index) in dynamicModel" :key="index" :value="cat.id">{{ cat.title }}</option>
+            <select class="w-4/5 border rounded" v-model="catID">
+              <option v-for="(cat,index) in categories" :key="index" :value="cat.id">{{ cat.title }}</option>
             </select>
           </div>
         </div>
@@ -81,6 +81,8 @@ export default {
       language: 'tr',
       imageUrl: '',
       imageFile: '',
+      categories: [],
+      catID: '',
       error: [],
       langData: [
         {
@@ -98,17 +100,16 @@ export default {
       ],
     }
   },
-  created() {
+  async created() {
     if (this.additionalInput) {
-      API.get('/categories')
+      await API.get('/categories')
           .then(res => {
-            this.dynamicModel(res.data)
+            this.categories = res.data
           })
     }
   },
   methods: {
-    dynamicModel(data) {
-
+    dynamicModel() {
     },
     updateSlug: function (val) {
       this.slug = val;
@@ -129,7 +130,7 @@ export default {
       form.append('title', this.title)
       form.append('slug', this.slug)
       if (this.additionalInput) {
-        // form.append('cat_id', this.)
+        form.append('cat_id', this.catID)
       }
       form.append('language', this.language)
       form.append('image', this.imageFile)

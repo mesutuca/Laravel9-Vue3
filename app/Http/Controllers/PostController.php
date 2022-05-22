@@ -56,6 +56,7 @@ class PostController extends Controller
 
                 $post->title = $request->title;
                 $post->slug = $request->slug;
+                $post->categori_id = $request->cat_id;
                 $post->image = '/storage/' . $file_path;
                 $post->save();
 

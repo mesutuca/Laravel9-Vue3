@@ -92,7 +92,7 @@ class CategoriController extends Controller
      */
     public function edit(Categori $categori)
     {
-        //
+
     }
 
     /**
@@ -104,6 +104,7 @@ class CategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
+        dd($request);
         $data = Categori::find($id);
 
         return Categori::where('id', $id)->update([

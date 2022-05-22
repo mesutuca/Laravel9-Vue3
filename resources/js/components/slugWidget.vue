@@ -9,13 +9,13 @@
       </svg>
     </div>
     <div class="url-wrapper">
-      <span class="rout-url">{{ domainUrl }}</span>
-      <span class="subdirectoy-url" v-if="subdirectory">{{ subdirectory }}</span>
+      <span class="rout-url">{{ domainUrl }}/</span>
+      <span class="subdirectoy-url" v-if="subdirectory">{{ subdirectory }}/</span>
       <span class="slug" v-show="slug && !isEditing">{{ slug }}</span>
       <input class="border" type="text" v-show="isEditing" v-model="customSlug"/>
     </div>
     <div class="button ml-2">
-      <button class="border px-2" v-show="!isEditing" @click.prevent="editSlug">Edit</button>
+      <button class="border px-2" v-show="!isEditing" @click.prevent="editSlug" :disabled="disabled">Edit</button>
       <button class="border px-2" v-show="isEditing" @click.prevent="saveSlug">Save</button>
       <button class="border px-2" v-show="isEditing" @click.prevent="resetEditing">Reset</button>
     </div>
@@ -36,6 +36,9 @@ export default {
     title: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: Boolean
     }
   },
   data: function () {
