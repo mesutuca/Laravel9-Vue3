@@ -57,7 +57,7 @@ class CategoriController extends Controller
             $post->title = $request->title;
             $post->slug = $request->slug;
             $post->language = $request->language;
-            $post->image = $store . $this->uploadFile($request->slug, $request->image);
+            $post->image = $this->uploadFile($request->slug, $request->image);
             $post->save();
 
             return response()->json(['success' => 'File uploaded successfully.']);
@@ -104,12 +104,20 @@ class CategoriController extends Controller
     public function update(Request $request, $id)
     {
         $data = Categori::find($id);
+        $store = '/storage/';
 
-        dd($request->image);
+
         if ($data->slug !== $request->slug) {
-            $contoll = Categori::where('slug', '=', $request->slug)->first();
-            if (!$contoll) {
+            $controller = Categori::where('slug', '=', $request->slug)->first();
+            if (!$controller) {
                 Storage::move('public/' . $data->slug, 'public/' . $request->slug);
+                return Categori::where('id', $id)->update([
+                    'title' => $request->title,
+                    'slug' => $request->slug,
+                    'language' => $request->language,
+                    'image' => $request->image,
+                    'status' => $request->status,
+                ]);
 
 
             } else {
@@ -161,7 +169,7 @@ class CategoriController extends Controller
         $fileNameOnly = pathinfo($originalFileName, PATHINFO_FILENAME);
         $fileName = Str::slug($fileNameOnly) . "-" . time() . "." . $extension;
 
-        $uploadedFileName = $image->storeAs($slug, $fileName, 'public');
-        return $uploadedFileName;
+        $image->storeAs($slug, $fileName, 'public');
+        return $fileName;
     }
 }
