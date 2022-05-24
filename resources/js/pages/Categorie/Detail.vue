@@ -16,7 +16,7 @@
             <label for="" class="w-1/5">Title</label>
             <input type="text" class="w-4/5 border rounded" v-model="getData.title" :disabled="!editForm">
           </div>
-          <slug-widget :title="getData.title" @slug-changed="updateSlug" :disabled="!editForm"/>
+          <SlugWidget :title="getData.title" @slug-changed="updateSlug" :disabled="!editForm"/>
         </div>
         <div
             class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
@@ -48,10 +48,10 @@ export default {
   components: {SlugWidget},
   data() {
     return {
-
-      getData: null,
+      getData: [],
       editForm: false,
       error: [],
+      imageFile: '',
       langData: [
         {
           name: 'Türkçe',
@@ -70,15 +70,15 @@ export default {
   },
   methods: {
     updateSlug: function (val) {
-      this.slug = val;
+      this.getData.slug = val
     },
     handleImageSelected(e) {
       if (!e.target.files.length) return;
-      this.imageFile = e.target.files[0];
+      this.getData.image = e.target.files[0];
       let reader = new FileReader();
-      reader.readAsDataURL(this.imageFile);
+      reader.readAsDataURL(this.getData.image);
       reader.onload = e => {
-        this.imageUrl = e.target.result;
+        this.getData.image = e.target.result;
       };
     },
     async handleChange(id) {

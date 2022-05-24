@@ -9,7 +9,7 @@
       </svg>
     </div>
     <div class="url-wrapper">
-      <span class="rout-url">{{ domainUrl }}/</span>
+      <span class="rout-url">{{ domainUrl }}</span>
       <span class="subdirectoy-url" v-if="subdirectory">{{ subdirectory }}/</span>
       <span class="slug" v-show="slug && !isEditing">{{ slug }}</span>
       <input class="border" type="text" v-show="isEditing" v-model="customSlug"/>
@@ -35,7 +35,7 @@ export default {
     },
     title: {
       type: String,
-      required: true
+      required: false
     },
     disabled: {
       type: Boolean

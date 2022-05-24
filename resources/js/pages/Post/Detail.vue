@@ -30,7 +30,7 @@ export default {
   components: {SlugWidget},
   data() {
     return {
-      getData: null,
+      getData: [],
     }
   },
   props: {

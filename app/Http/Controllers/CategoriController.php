@@ -54,7 +54,6 @@ class CategoriController extends Controller
          */
         if (!$categoryControll) {
             $post = new Categori();
-
             $post->title = $request->title;
             $post->slug = $request->slug;
             $post->language = $request->language;
@@ -104,12 +103,29 @@ class CategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request);
         $data = Categori::find($id);
 
-        return Categori::where('id', $id)->update([
-            'status' => $request->status
-        ]);
+        dd($request->image);
+        if ($data->slug !== $request->slug) {
+            $contoll = Categori::where('slug', '=', $request->slug)->first();
+            if (!$contoll) {
+                Storage::move('public/' . $data->slug, 'public/' . $request->slug);
+
+
+            } else {
+                echo "bu kategori adında bir sayfa mevcut";
+            }
+        } else {
+            echo "değişiklik yok";
+        }
+
+        /*return Categori::where('id', $id)->update([
+            'title' => $request->title,
+            'slug' => $request->slug,
+            'language' => $request->language,
+            'image' => $request->image,
+            'status' => $request->status,
+        ]);*/
     }
 
     /**
