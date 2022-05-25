@@ -48,7 +48,7 @@ export default {
   components: {SlugWidget},
   data() {
     return {
-      getData: [],
+      getData: null,
       editForm: false,
       error: [],
       imageFile: '',
@@ -74,15 +74,21 @@ export default {
     },
     handleImageSelected(e) {
       if (!e.target.files.length) return;
-      this.getData.image = e.target.files[0];
+      this.imageFile = e.target.files[0];
       let reader = new FileReader();
-      reader.readAsDataURL(this.getData.image);
+      reader.readAsDataURL(this.imageFile);
       reader.onload = e => {
         this.getData.image = e.target.result;
       };
     },
     async handleChange(id) {
-      await API.put('/categories' + '/' + id, this.getData)
+      const config = {headers: {'content-type': 'multipart/form-data'}}
+      const form = new FormData();
+      form.append('title', this.getData.title)
+      form.append('slug', this.getData.slug)
+      form.append('language', this.getData.language)
+      form.append('image', this.imageFile ? this.imageFile : this.getData.image)
+      await API.put('/categories' + '/' + id, form, config)
     }
   },
   async created() {
