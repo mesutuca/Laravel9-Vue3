@@ -48,7 +48,7 @@ export default {
   components: {SlugWidget},
   data() {
     return {
-      getData: null,
+      getData: [],
       editForm: false,
       error: [],
       imageFile: '',
@@ -84,11 +84,13 @@ export default {
     async handleChange(id) {
       const config = {headers: {'content-type': 'multipart/form-data'}}
       const form = new FormData();
-      form.append('title', this.getData.title)
+      form.append('title', this.getData.title);
       form.append('slug', this.getData.slug)
       form.append('language', this.getData.language)
       form.append('image', this.imageFile ? this.imageFile : this.getData.image)
-      await API.put('/categories' + '/' + id, form, config)
+      form.append('status', this.getData.status)
+      form.append('_method', 'PUT')
+      await API.post('/categories' + '/' + id, form)
     }
   },
   async created() {

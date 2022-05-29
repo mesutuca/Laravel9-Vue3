@@ -60,7 +60,9 @@ class CategoriController extends Controller
             $post->image = $store . $this->uploadFile($request->slug, $request->image);
             $post->save();
 
-            return response()->json(['success' => 'File uploaded successfully.']);
+            return response()->json([
+                'data' => $post,
+                'success' => 'File uploaded successfully.']);
         } else {
             return response()->json(['error' => 'slug record available'], 422);
         }
@@ -105,7 +107,20 @@ class CategoriController extends Controller
     {
         $data = Categori::find($id);
         $store = '/storage/';
-        dd($request);
+
+        if ($data->image !== $request->image) {
+            $folder_path = public_path() . $data->image;
+            unlink($folder_path);
+
+            return Categori::where('id', $id)->update([
+                'title' => $request->title,
+                'slug' => $request->slug,
+                'language' => $request->language,
+                'image' => $store . $this->uploadFile($request->slug, $request->image),
+                'status' => $request->status,
+            ]);
+
+        }
         if ($data->slug !== $request->slug) {
             $controller = Categori::where('slug', '=', $request->slug)->first();
             if (!$controller) {
@@ -119,22 +134,18 @@ class CategoriController extends Controller
                     'image' => $newIm,
                     'status' => $request->status,
                 ]);
-
-
             } else {
                 echo "bu kategori adında bir sayfa mevcut";
             }
-        } else {
-            echo "değişiklik yok";
         }
 
-        /*return Categori::where('id', $id)->update([
+        return Categori::where('id', $id)->update([
             'title' => $request->title,
             'slug' => $request->slug,
             'language' => $request->language,
             'image' => $request->image,
             'status' => $request->status,
-        ]);*/
+        ]);
     }
 
     /**
@@ -148,7 +159,8 @@ class CategoriController extends Controller
 
         $Image = Categori::find($id);
 
-        $folder_path = public_path() . '/storage/' . $Image->slug;
+        $folder_path = public_path() . '/storage/categori/' . $Image->slug;
+
         $delete_folter = File::deleteDirectory($folder_path);
 
         if ($delete_folter) {

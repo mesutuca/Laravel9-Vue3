@@ -55,6 +55,11 @@ export default {
       show: false,
     }
   },
+  provide() {
+    return {
+      getData: this.getData,
+    }
+  },
   methods: {
     dbleclick(data) {
       this.$router.push({name: 'categoridetail', params: {id: data.id}})
@@ -63,7 +68,7 @@ export default {
     statusChange(file) {
       API.put('/categories' + '/' + file.id, file)
     },
-    deleteCategory(index,id) {
+    deleteCategory(index, id) {
       API.delete('/categories' + '/' + id)
           .then(res => {
             if (res.status === 200) {

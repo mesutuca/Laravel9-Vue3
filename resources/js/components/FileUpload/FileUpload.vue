@@ -100,6 +100,7 @@ export default {
       ],
     }
   },
+
   async created() {
     if (this.additionalInput) {
       await API.get('/categories')
@@ -136,7 +137,9 @@ export default {
       form.append('image', this.imageFile)
       await axios.post(this.apiUrl, form, config)
           .then(response => {
-            console.log(response)
+            this.$emit('DBdata', response.data.data)
+
+            // console.log(response)
           })
           .catch(error => {
             this.error = error.response.data.errors;
