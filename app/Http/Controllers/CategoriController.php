@@ -57,6 +57,7 @@ class CategoriController extends Controller
             $post->title = $request->title;
             $post->slug = $request->slug;
             $post->language = $request->language;
+            $post->status = 'on';
             $post->image = $store . $this->uploadFile($request->slug, $request->image);
             $post->save();
 

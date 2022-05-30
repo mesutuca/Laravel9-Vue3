@@ -12,7 +12,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(categori,index) in getData" :key="index" @dblclick="dbleclick(categori)">
+      <tr v-for="(categori,index) in provideData.getData" :key="index" @dblclick="dbleclick(categori)">
         <td>{{ index }}</td>
         <td>{{ categori.title }}</td>
         <td>{{ categori.slug }}</td>
@@ -51,16 +51,30 @@ export default {
   name: "List",
   data() {
     return {
-      getData: [],
+      provideData: {
+        getData: [],
+      },
       show: false,
     }
   },
   provide() {
     return {
-      getData: this.getData,
+      provideData: this.provideData,
+      addNewItem: this.addNewItem
     }
   },
   methods: {
+    addNewItem(data) {
+      this.provideData.getData.push({
+        id: data.id, title: data.title,
+        slug: data.slug, image: data.image,
+        language: data.language, status: data.status,
+        created_at: data.created_at, updated_at: data.updated_at
+      })
+      setTimeout(() => {
+        this.$router.push({name: 'categoridetail', params: {id: data.id}})
+      }, 1000)
+    },
     dbleclick(data) {
       this.$router.push({name: 'categoridetail', params: {id: data.id}})
     },
@@ -83,7 +97,7 @@ export default {
   async created() {
     await API.get('/categories')
         .then(res => {
-          this.getData = res.data
+          this.provideData.getData = res.data
         })
         .catch(err => {
           console.log(err)

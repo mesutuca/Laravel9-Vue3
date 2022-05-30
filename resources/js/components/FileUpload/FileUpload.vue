@@ -54,7 +54,6 @@
 
 <script>
 import slugWidget from "./../slugWidget";
-import axios from "axios";
 import API from "../../services";
 
 
@@ -70,6 +69,7 @@ export default {
       required: false,
     }
   },
+  inject:['addNewItem'],
   components: {
     slugWidget
   },
@@ -135,9 +135,9 @@ export default {
       }
       form.append('language', this.language)
       form.append('image', this.imageFile)
-      await axios.post(this.apiUrl, form, config)
+      await API.post(this.apiUrl, form, config)
           .then(response => {
-            this.$emit('DBdata', response.data.data)
+            this.addNewItem(response.data.data)
 
             // console.log(response)
           })
