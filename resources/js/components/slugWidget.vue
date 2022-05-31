@@ -44,7 +44,7 @@ export default {
   data: function () {
     return {
       domainUrl: process.env.MIX_APP_URL,
-      slug: this.convertTitle(),
+      slug: this.convertTitle() ? this.convertTitle() : '',
       isEditing: false,
       customSlug: '',
       wasEdited: false

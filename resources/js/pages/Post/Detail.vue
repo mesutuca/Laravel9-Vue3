@@ -16,7 +16,8 @@
             <label for="" class="w-1/5">Title</label>
             <input type="text" class="w-4/5 border rounded" v-model="getData.title" :disabled="!editForm">
           </div>
-          <SlugWidget :title="getData.title" @slug-changed="updateSlug" :disabled="!editForm"/>
+
+          <SlugWidget :title="getData.title" :subdirectory="getData.categori_id" @slug-changed="updateSlug" :disabled="!editForm"/>
         </div>
         <div
             class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
@@ -24,6 +25,15 @@
             <label for="" class="w-1/5">Language</label>
             <select v-model="getData.language" class="w-4/5 border rounded" :disabled="!editForm">
               <option v-for="(lang,index) in langData" :key="index" :value="lang.slug">{{ lang.name }}</option>
+            </select>
+          </div>
+        </div>
+        <div
+            class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
+          <div class="flex flex-row w-full">
+            <label for="" class="w-1/5">Categori</label>
+            <select class="w-4/5 border rounded" v-model="getData.categori_id">
+              <option v-for="(cat,index) in categories" :key="index" :value="cat.id">{{ cat.title }}</option>
             </select>
           </div>
         </div>
@@ -52,6 +62,7 @@ export default {
       editForm: false,
       error: [],
       imageFile: '',
+      categories: [],
       langData: [
         {
           name: 'Türkçe',
@@ -89,6 +100,7 @@ export default {
       form.append('language', this.getData.language)
       form.append('image', this.imageFile ? this.imageFile : this.getData.image)
       form.append('status', this.getData.status)
+      form.append('cat_id', this.getData.categori_id)
       form.append('_method', 'PUT')
       await API.post('/posts' + '/' + id, form)
     }
@@ -99,6 +111,10 @@ export default {
           this.getData = res.data
         })
         .catch(err => this.$router.push({name: 'error'}))
+    await API.get('/categories')
+        .then(res => {
+          this.categories = res.data
+        })
   },
 }
 </script>
