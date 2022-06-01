@@ -17,7 +17,8 @@
             <input type="text" class="w-4/5 border rounded" v-model="getData.title" :disabled="!editForm">
           </div>
 
-          <SlugWidget :title="getData.title" :subdirectory="getData.categori_id" @slug-changed="updateSlug" :disabled="!editForm"/>
+          <SlugWidget :title="getData.title" :subdirectory="categori_slug" @slug-changed="updateSlug"
+                      :disabled="!editForm"/>
         </div>
         <div
             class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
@@ -63,6 +64,7 @@ export default {
       error: [],
       imageFile: '',
       categories: [],
+      categori_slug: null,
       langData: [
         {
           name: 'Türkçe',
@@ -116,6 +118,20 @@ export default {
           this.categories = res.data
         })
   },
+  watch: {
+    'getData.categori_id': {
+      handler: function (val) {
+        console.log(val, 'vallll')
+        return this.categories.find(element => {
+          if (element.id === val) {
+            console.log(element.slug)
+            return this.categori_slug = element.slug
+          }
+        });
+      },
+      deep: true
+    }
+  }
 }
 </script>
 
