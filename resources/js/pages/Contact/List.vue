@@ -1,23 +1,31 @@
 <template>
-  <table>
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>TİTLE</th>
-      <th>STATUS</th>
-      <th>ACTİON</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr v-for="(item,index) in getData" :key="index">
-      <td>{{ index++ }}</td>
-      <td>{{ item.title }}</td>
-      <td>{{ item.address }}</td>
-      <td>{{ item.status }}</td>
-      <td>{{ item.id }}</td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="flex flex-col">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>TİTLE</th>
+        <th>STATUS</th>
+        <th>ACTİON</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(item,index) in getData" :key="index">
+        <td>{{ index++ }}</td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.address }}</td>
+        <td>{{ item.status }}</td>
+        <td>{{ item.id }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+    <router-link :to="{name:'newcontact'}">
+      Contact Ekle
+    </router-link>
+
+    <router-view/>
+  </div>
 </template>
 
 <script>

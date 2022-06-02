@@ -33,7 +33,7 @@
             class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
           <div class="flex flex-row w-full">
             <label for="" class="w-1/5">Categori</label>
-            <select class="w-4/5 border rounded" v-model="getData.categori_id">
+            <select class="w-4/5 border rounded" v-model="getData.categori_id" :disabled="!editForm">
               <option v-for="(cat,index) in categories" :key="index" :value="cat.id">{{ cat.title }}</option>
             </select>
           </div>
@@ -117,14 +117,17 @@ export default {
         .then(res => {
           this.categories = res.data
         })
+    this.categories.find(element => {
+      if (element.id === this.getData.categori_id) {
+        this.categori_slug = element.slug
+      }
+    })
   },
   watch: {
     'getData.categori_id': {
       handler: function (val) {
-        console.log(val, 'vallll')
         return this.categories.find(element => {
           if (element.id === val) {
-            console.log(element.slug)
             return this.categori_slug = element.slug
           }
         });

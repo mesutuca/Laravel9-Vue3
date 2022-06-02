@@ -19,6 +19,10 @@ export default {
       type: String,
       required: true,
     },
+    id: {
+      type: Number,
+      required: true
+    }
   },
   data() {
     return {
@@ -40,7 +44,7 @@ export default {
     statusChange(file) {
       API.put(this.apiUrl + '/' + file.id, file)
     },
-    ImageDetele(index,id) {
+    ImageDetele(index, id) {
       // console.log(this.uploadedImages.target)
       // console.log(id)
       API.delete(this.apiUrl + '/' + id)

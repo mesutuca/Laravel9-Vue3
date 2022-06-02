@@ -41,14 +41,27 @@ export default [
         props: true
     },
     {
+        name: 'postImage',
+        path: '/post/:id/image',
+        component: () => import('../pages/Post/Images')
+    },
+    {
         name: 'contact',
         path: '/contact',
-        component: () => import('../pages/Contact')
+        component: () => import('../pages/Contact'),
+
     },
     {
         name: 'contactm',
         path: '/contactm',
-        component: () => import('../pages/Contact/List')
+        component: () => import('../pages/Contact/List'),
+        children: [
+            {
+                name: 'newcontact',
+                path: 'newcontact',
+                component: () => import('../pages/Contact/Add'),
+            }
+        ]
     },
     {
         name: 'deneme',

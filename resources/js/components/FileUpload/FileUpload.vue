@@ -19,8 +19,7 @@
             <label for="" class="w-1/5">Title</label>
             <input type="text" class="w-4/5 border rounded" v-model="title">
           </div>
-          <slug-widget :title="title" :subdirectory="catID" @slug-changed="updateSlug"/>
-
+          <slug-widget :title="title" :subdirectory="categori_slug" @slug-changed="updateSlug"/>
         </div>
         <div
             class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
@@ -83,6 +82,7 @@ export default {
       imageFile: '',
       categories: [],
       catID: '',
+      categori_slug: null,
       error: [],
       langData: [
         {
@@ -138,14 +138,24 @@ export default {
       await API.post(this.apiUrl, form, config)
           .then(response => {
             this.addNewItem(response.data.data)
-
-            // console.log(response)
           })
           .catch(error => {
             this.error = error.response.data.errors;
           })
     }
   },
+  watch: {
+    catID: {
+      handler: function (val) {
+        return this.categories.find(element => {
+          if (element.id === val) {
+            return this.categori_slug = element.slug
+          }
+        });
+      },
+      deep: true
+    }
+  }
 }
 </script>
 

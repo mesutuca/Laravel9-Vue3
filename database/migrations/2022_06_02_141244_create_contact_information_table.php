@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('address');
             $table->string('data');
             $table->string('status');
+            $table->string('googleaddress');
             $table->timestamps();
         });
     }
