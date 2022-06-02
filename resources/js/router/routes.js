@@ -46,6 +46,11 @@ export default [
         component: () => import('../pages/Contact')
     },
     {
+        name: 'contactm',
+        path: '/contactm',
+        component: () => import('../pages/Contact/List')
+    },
+    {
         name: 'deneme',
         path: '/deneme',
         component: () => import('../pages/Deneme')

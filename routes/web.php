@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoriController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostImageController;
+use App\Models\ContactInformation;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,7 @@ Route::apiResources([
     '/categories' => CategoriController::class,
     '/posts' => PostController::class,
     '/postimage' => PostImageController::class,
+    '/contact' => ContactInformation::class,
 ]);
 
 
