@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\PostImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -49,8 +50,9 @@ class PostImageController extends Controller
         $request->validate([
             'file_name.*' => 'image|mimes:jpg,jpeg,png',
         ]);
-
-        $postImages = $this->uploadFiles($request);
+        $store = '/storage/';
+        $controll = Post::find($request->post_id);
+        $postImages = $this->uploadFiles($controll->slug, $request);
         $getAllData = [];
         foreach ($postImages as $postImage) {
 
@@ -59,6 +61,7 @@ class PostImageController extends Controller
             $postImage->title = $title;
             $postImage->file_name = $fileName;
             $postImage->status = 'on';
+            $postImage->post_id = $request->post_id;
             $postImage->save();
             $getAllData[] = [
                 'id' => $postImage->id,
@@ -75,11 +78,26 @@ class PostImageController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\PostImage $postImage
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(PostImage $postImage)
+    public function show($id)
     {
-        //
+        $data = PostImage::where('post_id', $id)->get();
+        $getAllData = [];
+        if ($data) {
+            foreach ($data as $item) {
+                $getAllData[] = [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                    'status' => $item->status,
+                    'src' => $item->src
+                ];
+            }
+            return response()->json($getAllData);
+        }
+        return response()->json([
+            'message' => 'Record not found.'
+        ], 404);
     }
 
     /**
@@ -133,26 +151,26 @@ class PostImageController extends Controller
 
     }
 
-    protected function uploadFiles($request)
+    protected function uploadFiles($slug, $request)
     {
         $uploadedImages = [];
         if ($request->hasFile('file_name')) {
             $images = $request->file('file_name');
             foreach ($images as $image) {
-                $uploadedImages[] = $this->uploadFile($image);
+                $uploadedImages[] = $this->uploadFile($slug, $image);
             }
         }
         return $uploadedImages;
     }
 
-    protected function uploadFile($image)
+    protected function uploadFile($slug, $image)
     {
         $originalFileName = $image->getClientOriginalName();
         $extension = $image->getClientOriginalExtension();
         $fileNameOnly = pathinfo($originalFileName, PATHINFO_FILENAME);
         $fileName = Str::slug($fileNameOnly) . "-" . time() . "." . $extension;
 
-        $uploadedFileName = $image->storeAs('public', $fileName);
+        $uploadedFileName = $image->storeAs('post/' . $slug . '/images/', $fileName, 'public');
         return [$uploadedFileName, $fileNameOnly];
     }
 }

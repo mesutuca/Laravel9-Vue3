@@ -20,7 +20,7 @@ export default {
       required: true,
     },
     id: {
-      type: Number,
+      type: String,
       required: true
     }
   },
@@ -34,8 +34,9 @@ export default {
     }
   },
   async created() {
-    await API.get(this.apiUrl)
+    await API.get(this.apiUrl + '/' + this.id)
         .then(res => {
+          console.log(res)
           this.getFile = res.data
           this.uploadedImages = res.data
         })
@@ -45,8 +46,6 @@ export default {
       API.put(this.apiUrl + '/' + file.id, file)
     },
     ImageDetele(index, id) {
-      // console.log(this.uploadedImages.target)
-      // console.log(id)
       API.delete(this.apiUrl + '/' + id)
           .then(res => {
             if (res.status === 200) {
@@ -66,6 +65,7 @@ export default {
       let formData = new FormData();
       for (let file of this.files) {
         formData.append('file_name[]', file, file.name)
+        formData.append('post_id', this.id)
       }
       this.isUploading = true;
       await API.post(this.apiUrl, formData, {

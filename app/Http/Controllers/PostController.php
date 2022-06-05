@@ -131,10 +131,11 @@ class PostController extends Controller
         if ($data->slug !== $request->slug) {
             $controller = Post::where('slug', '=', $request->slug)->first();
             if (!$controller) {
-                Storage::move('public/posts/' . $data->slug, 'public/categori/' . $request->slug);
+                Storage::move('public/post/' . $data->slug, 'public/post/' . $request->slug);
                 $newImage = explode('/', $data->image);
-                $newIm = $store . 'posts/' . $request->slug . '/' . $newImage[4];
-                return Categori::where('id', $id)->update([
+
+                $newIm = $store . 'post/' . $request->slug . '/' . $newImage[4];
+                return Post::where('id', $id)->update([
                     'title' => $request->title,
                     'slug' => $request->slug,
                     'language' => $request->language,
@@ -166,7 +167,7 @@ class PostController extends Controller
     {
         $Image = Post::find($id);
 
-        $folder_path = public_path() . '/storage/posts/' . $Image->slug;
+        $folder_path = public_path() . '/storage/post/' . $Image->slug;
 
         $delete_folter = File::deleteDirectory($folder_path);
 
@@ -186,6 +187,6 @@ class PostController extends Controller
         $fileNameOnly = pathinfo($originalFileName, PATHINFO_FILENAME);
         $fileName = Str::slug($fileNameOnly) . "-" . time() . "." . $extension;
 
-        return $image->storeAs('posts/' . $slug, $fileName, 'public');
+        return $image->storeAs('post/' . $slug, $fileName, 'public');
     }
 }
