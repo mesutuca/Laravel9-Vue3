@@ -31,7 +31,9 @@
           <button class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100"
                   @click="deleteCategory(index,post.id)">Sil
           </button>
-          <router-link :to="{name:'postImage',params:{id:post.id}}" class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100">Resimler</router-link>
+          <router-link :to="{name:'postImage',params:{id:post.id}}"
+                       class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100">Resimler
+          </router-link>
         </td>
       </tr>
       </tbody>
@@ -87,7 +89,7 @@ export default {
       API.delete('/posts' + '/' + id)
           .then(res => {
             if (res.status === 200) {
-              this.uploadedImages.splice(this.uploadedImages.indexOf(index), 1);
+              this.provideData.getData.splice(this.provideData.getData.indexOf(index), 1);
             }
           })
           .catch(err => {

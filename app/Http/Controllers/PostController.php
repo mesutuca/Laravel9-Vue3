@@ -168,11 +168,11 @@ class PostController extends Controller
         $Image = Post::find($id);
 
         $folder_path = public_path() . '/storage/post/' . $Image->slug;
-
         $delete_folter = File::deleteDirectory($folder_path);
 
         if ($delete_folter) {
             Post::destroy($id);
+
             return response()->json([
                 'message' => 'Fotoğraf Silindi'
             ]);

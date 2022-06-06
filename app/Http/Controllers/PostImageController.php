@@ -50,8 +50,8 @@ class PostImageController extends Controller
         $request->validate([
             'file_name.*' => 'image|mimes:jpg,jpeg,png',
         ]);
-        $store = '/storage/';
         $controll = Post::find($request->post_id);
+        $store = '/storage/post/' . $controll->slug . '/';
         $postImages = $this->uploadFiles($controll->slug, $request);
         $getAllData = [];
         foreach ($postImages as $postImage) {
@@ -67,7 +67,7 @@ class PostImageController extends Controller
                 'id' => $postImage->id,
                 'title' => $postImage->title,
                 'status' => $postImage->status,
-                'src' => $postImage->src
+                'src' => $store . $postImage->file_name
             ];
 
         }
@@ -83,6 +83,9 @@ class PostImageController extends Controller
     public function show($id)
     {
         $data = PostImage::where('post_id', $id)->get();
+        $controll = Post::find($id);
+        $store = '/storage/post/' . $controll->slug . '/images/';
+
         $getAllData = [];
         if ($data) {
             foreach ($data as $item) {
@@ -90,7 +93,7 @@ class PostImageController extends Controller
                     'id' => $item->id,
                     'title' => $item->title,
                     'status' => $item->status,
-                    'src' => $item->src
+                    'src' => $store . $item->file_name
                 ];
             }
             return response()->json($getAllData);
@@ -136,7 +139,9 @@ class PostImageController extends Controller
     public function destroy($id)
     {
         $Image = PostImage::find($id);
-        $image_path = public_path() . '/' . $Image->src;
+        $Post_id = Post::find($Image->post_id);
+        $store = '/storage/post/' . $Post_id->slug . '/images/';
+        $image_path = public_path() . $store . $Image->file_name;
         $deleteImage = unlink($image_path);
         if ($deleteImage) {
             PostImage::destroy($id);
@@ -170,7 +175,8 @@ class PostImageController extends Controller
         $fileNameOnly = pathinfo($originalFileName, PATHINFO_FILENAME);
         $fileName = Str::slug($fileNameOnly) . "-" . time() . "." . $extension;
 
-        $uploadedFileName = $image->storeAs('post/' . $slug . '/images/', $fileName, 'public');
-        return [$uploadedFileName, $fileNameOnly];
+        $image->storeAs('post/' . $slug . '/images/', $fileName, 'public');
+//        $uploadedFileName = $image->storeAs('post/' . $slug . '/images/', $fileName, 'public');
+        return [$fileName, $fileNameOnly];
     }
 }
