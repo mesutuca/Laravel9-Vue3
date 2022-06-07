@@ -16,9 +16,8 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->string('address');
-            $table->string('data');
-            $table->string('status');
-            $table->string('googleaddress');
+            $table->json('informations')->nullable();
+            $table->enum('status', ['on', 'off'])->default('on');
             $table->timestamps();
         });
     }

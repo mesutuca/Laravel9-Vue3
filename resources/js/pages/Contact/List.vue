@@ -5,12 +5,13 @@
       <tr>
         <th>ID</th>
         <th>TİTLE</th>
+        <th>ADDRESS</th>
         <th>STATUS</th>
         <th>ACTİON</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(item,index) in getData" :key="index">
+      <tr v-for="(item,index) in getData" :key="index" @dblclick="dbleclick(item)">
         <td>{{ index++ }}</td>
         <td>{{ item.title }}</td>
         <td>{{ item.address }}</td>
@@ -38,7 +39,11 @@ export default {
       getData: [],
     }
   },
-  methods: {},
+  methods: {
+    dbleclick(data) {
+      this.$router.push({name: 'contactdetail', params: {id: data.id}})
+    },
+  },
   created() {
     API.get('/contact')
         .then(response => {

@@ -8,14 +8,14 @@
             class="flex flex-col justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
           <div class="flex flex-row w-full">
             <label for="" class="w-1/5">Title</label>
-            <input type="text" class="w-4/5 border rounded" v-model="title">
+            <input type="text" class="w-4/5 border rounded" v-model="getData.title">
           </div>
         </div>
         <div
             class="flex flex-col justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
           <div class="flex flex-row w-full">
             <label for="" class="w-1/5">Addresss</label>
-            <textarea class="w-4/5 border rounded resize-none" rows="3" v-model="address"/>
+            <textarea class="w-4/5 border rounded resize-none" rows="3" v-model="getData.address"/>
           </div>
         </div>
 
@@ -27,7 +27,7 @@
           type: 'transition-group',
           name: !drag ? 'flip-list' : null
         }"
-            :list="Informations"
+            :list="getData.informations"
             v-bind="dragOptions"
             @start="drag = true"
             @end="drag = false"
@@ -60,7 +60,7 @@
           </template>
 
         </draggable>
-        {{ Informations }}
+        {{ getData.informations }}
 
         <!-- This example requires Tailwind CSS v2.0+ -->
         <div class="relative inline-block text-left">
@@ -113,29 +113,23 @@
 import draggable from "vuedraggable";
 import API from "../../services";
 
-
 export default {
-  name: "Add",
+
+  name: "Detail",
   display: "Transitions",
   order: 7,
   components: {
     draggable
   },
+
+  props: ['id'],
   data() {
     return {
-      title: '',
-      address: '',
-      Informations: [],
+      getData: [],
+      editForm: false,
+      error: [],
       drag: false,
-      id: 0,
-      types: {
-        phone: 'Telefon Numarası',
-        fax: 'Fax Numarası',
-        email: 'E-mail Adresi',
-        whatsapp: 'Whatsapp',
-        directions: 'Yol Tarifi',
-        map: 'Google Map',
-      }
+      idx: 0,
     }
   },
   computed: {
@@ -146,33 +140,23 @@ export default {
         disabled: false,
         ghostClass: "ghost"
       };
+    },
+    addItem() {
+
+    },
+    removeAt() {
+    },
+    handleSubmit() {
+
     }
   },
-  methods: {
-    async handleSubmit() {
-      const data = {
-        title: this.title,
-        address: this.address,
-        informations: this.Informations
-      }
-      API.post('/contact', data).then(res => {
-        console.log(res)
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    addItem(item) {
-      this.Informations.push({
-        order: this.id++,
-        name: item,
-        value: null
-      })
-    },
-    removeAt(idx) {
-      this.Informations.splice(idx, 1);
-      this.id--
-    },
-  }
+  async created() {
+    await API.get('/contact/' + this.id)
+        .then(res => {
+          this.getData = res.data
+        })
+        .catch(err => this.$router.push({name: 'error'}))
+  },
 }
 </script>
 

@@ -64,6 +64,12 @@ export default [
         ]
     },
     {
+        name: 'contactdetail',
+        path: '/contact/:id',
+        component: () => import('../pages/Contact/Detail'),
+        props: true
+    },
+    {
         name: 'deneme',
         path: '/deneme',
         component: () => import('../pages/Deneme')

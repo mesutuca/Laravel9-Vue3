@@ -14,7 +14,7 @@ class ContactInformationController extends Controller
      */
     public function index()
     {
-        return 'asd';
+        return ContactInformation::all();
     }
 
     /**
@@ -30,29 +30,44 @@ class ContactInformationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255',
+            'address' => 'required',
+        ]);
+        $contact = new ContactInformation();
+        $contact->title = $request->title;
+        $contact->address = $request->address;
+        $contact->status = 'on';
+        $contact->informations = $request->informations;
+        $contact->save();
+        return response()->json($contact);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ContactInformation  $contactInformation
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(ContactInformation $contactInformation)
+    public function show($id)
     {
-        //
+        $contact = ContactInformation::find($id);
+        if ($contact) {
+            return response()->json($contact);
+        }
+        return response()->json([
+            'message' => 'Record not found.'
+        ], 404);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ContactInformation  $contactInformation
+     * @param \App\Models\ContactInformation $contactInformation
      * @return \Illuminate\Http\Response
      */
     public function edit(ContactInformation $contactInformation)
@@ -63,8 +78,8 @@ class ContactInformationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ContactInformation  $contactInformation
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\ContactInformation $contactInformation
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, ContactInformation $contactInformation)
@@ -75,7 +90,7 @@ class ContactInformationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ContactInformation  $contactInformation
+     * @param \App\Models\ContactInformation $contactInformation
      * @return \Illuminate\Http\Response
      */
     public function destroy(ContactInformation $contactInformation)
