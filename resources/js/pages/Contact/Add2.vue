@@ -19,47 +19,14 @@
           </div>
         </div>
 
-        <draggable
-            class=""
-            tag="transition-group"
-            :component-data="{
-          tag: 'div',
-          type: 'transition-group',
-          name: !drag ? 'flip-list' : null
-        }"
-            :list="Items"
-            v-bind="dragOptions"
-            @start="drag = true"
-            @end="drag = false"
-            item-key="order"
-            handle=".handle"
-        >
-          <template #item="{ element, index }">
-            <div
-                class="flex flex-col justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
-              <div class="flex flex-row w-full items-center">
-                <div class="cursor-move handle w-8 text-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" fill="currentColor"
-                       viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                          d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
-                  </svg>
-                </div>
-                <label for="" class="w-1/5">{{ element.name }}</label>
-                <input type="text" class="w-4/5 border rounded" v-model="element.text">
-                <button @click="removeAt(index)">
-                  <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="20">
-                    <path
-                        d="M25.707,6.293c-0.195-0.195-1.805-1.805-2-2c-0.391-0.391-1.024-0.391-1.414,0c-0.195,0.195-17.805,17.805-18,18c-0.391,0.391-0.391,1.024,0,1.414c0.279,0.279,1.721,1.721,2,2c0.391,0.391,1.024,0.391,1.414,0c0.195-0.195,17.805-17.805,18-18C26.098,7.317,26.098,6.683,25.707,6.293z"/>
-                    <path
-                        d="M23.707,25.707c0.195-0.195,1.805-1.805,2-2c0.391-0.391,0.391-1.024,0-1.414c-0.195-0.195-17.805-17.805-18-18c-0.391-0.391-1.024-0.391-1.414,0c-0.279,0.279-1.721,1.721-2,2c-0.391,0.391-0.391,1.024,0,1.414c0.195,0.195,17.805,17.805,18,18C22.683,26.098,23.317,26.098,23.707,25.707z"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </template>
-
-        </draggable>
+        <div v-for="(item,index) in Items" :key="index"
+             class="flex flex-col justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
+          <div class="flex flex-row w-full">
+            <label for="" class="w-1/5">{{ item.label }}</label>
+            <input type="text" class="w-4/5 border rounded" v-model="item.value">
+            <button class="border border-gray-300" @click="removeItem(index)">Remove</button>
+          </div>
+        </div>
         {{ Items }}
 
         <!-- This example requires Tailwind CSS v2.0+ -->
@@ -89,29 +56,43 @@
             >
               Whatsapp
             </button>
-            <button @click="addItem('directions')"
-                    type="button"
-                    class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
-            >
-              Yol Tarifi Ekle
-            </button>
-            <button @click="addItem('map')"
-                    type="button"
-                    class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
-            >
-              Map Görseli Ekle
-            </button>
           </div>
         </div>
         <button class="border rounded bg-amber-500 p-2" type="submit">Save</button>
       </form>
     </div>
   </div>
+
+  <draggable
+      class="list-group flex flex-col justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3"
+      tag="transition-group"
+      :component-data="{
+          tag: 'div',
+          type: 'transition-group',
+          name: !drag ? 'flip-list' : null
+        }"
+      :list="Items"
+      v-bind="dragOptions"
+      @start="drag = true"
+      @end="drag = false"
+      item-key="order"
+
+  >
+    <template #item="{ element, index }">
+      <div class="flex flex-row w-full cursor-move">
+        <label for="" class="w-1/5">{{ element.name }}</label>
+        <input type="text" class="w-4/5 border rounded" v-model="element.text">
+        <i class="fa fa-times close" @click="removeAt(index)"></i>
+      </div>
+    </template>
+
+  </draggable>
 </template>
 
 <script>
 import draggable from "vuedraggable";
 
+let id = 1;
 
 export default {
   name: "Add",
@@ -126,8 +107,7 @@ export default {
       address: '',
       googleAdres: '',
       Items: [],
-      drag: false,
-      id: 0
+      drag: false
     }
   },
   computed: {
@@ -142,21 +122,27 @@ export default {
   },
   methods: {
     addItem(item) {
+      id++;
       this.Items.push({
-        order: this.id++,
+        order: id,
         name: item,
         text: null
       })
     },
     removeAt(idx) {
       this.Items.splice(idx, 1);
-      this.id--
     },
+    checkMove: function (e) {
+      window.console.log("Future index: " + e.draggedContext.futureIndex);
+    }
   }
 }
 </script>
 
 <style scoped>
+.button {
+  margin-top: 35px;
+}
 
 .flip-list-move {
   transition: transform 0.5s;
