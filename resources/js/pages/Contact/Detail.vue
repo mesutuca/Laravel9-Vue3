@@ -130,6 +130,14 @@ export default {
       error: [],
       drag: false,
       idx: 0,
+      types: {
+        phone: 'Telefon Numarası',
+        fax: 'Fax Numarası',
+        email: 'E-mail Adresi',
+        whatsapp: 'Whatsapp',
+        directions: 'Yol Tarifi',
+        map: 'Google Map',
+      }
     }
   },
   computed: {
@@ -141,17 +149,32 @@ export default {
         ghostClass: "ghost"
       };
     },
-    addItem() {
+  },
+  methods: {
+    addItem(item) {
 
+      this.getData.informations.push({
+        order: this.idx++,
+        name: item,
+        value: null
+      })
     },
-    removeAt() {
+    removeAt(idx) {
+      this.getData.informations.splice(idx, 1);
+      this.idx--
     },
-    handleSubmit() {
-
-    }
+    async handleSubmit() {
+      API.put('/contacts' + '/' + this.id, this.getData)
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    },
   },
   async created() {
-    await API.get('/contact/' + this.id)
+    await API.get('/contacts/' + this.id)
         .then(res => {
           this.getData = res.data
         })

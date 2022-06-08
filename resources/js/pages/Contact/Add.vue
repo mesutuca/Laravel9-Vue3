@@ -155,7 +155,7 @@ export default {
         address: this.address,
         informations: this.Informations
       }
-      API.post('/contact', data).then(res => {
+      API.post('/contacts', data).then(res => {
         console.log(res)
       }).catch(err => {
         console.log(err)

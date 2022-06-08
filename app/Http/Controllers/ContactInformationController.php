@@ -82,19 +82,32 @@ class ContactInformationController extends Controller
      * @param \App\Models\ContactInformation $contactInformation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ContactInformation $contactInformation)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'address' => 'required',
+        ]);
+        return ContactInformation::where('id', $id)->update([
+            'title' => $request->title,
+            'address' => $request->address,
+            'informations' => $request->informations,
+            'status' => $request->status,
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param \App\Models\ContactInformation $contactInformation
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(ContactInformation $contactInformation)
+    public function destroy($id)
     {
-        //
+        ContactInformation::destroy($id);
+        return response()->json([
+            'message' => 'Fotoğraf Silindi'
+        ]);
+
     }
 }

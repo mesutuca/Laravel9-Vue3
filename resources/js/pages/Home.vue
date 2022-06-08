@@ -1,14 +1,14 @@
 <template>
-  <FileUpload api-url="/posts"/>
+  <MultiSlider api-url="/slider"/>
 </template>
 
 <script>
-import FileUpload from "../components/FileUpload/FileUpload";
+
+import MultiSlider from '../components/MultiUpload/MultiSlider'
 
 export default {
   name: "Home",
-  components: {FileUpload},
-
+  components: {MultiSlider},
 }
 </script>
 

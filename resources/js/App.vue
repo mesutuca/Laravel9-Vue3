@@ -11,13 +11,10 @@
         <router-link to="/post">Post</router-link>
       </li>
       <li>
-        <router-link to="/deneme">Deneme</router-link>
+        <router-link to="/contact">Contactm</router-link>
       </li>
       <li>
-        <router-link to="/contact">Contact</router-link>
-      </li>
-      <li>
-        <router-link to="/contactm">Contactm</router-link>
+        <router-link to="/contactform">Contact Form</router-link>
       </li>
       <dark-mode/>
     </ul>
@@ -113,6 +110,7 @@ export default {
 
       &:hover {
         padding-left: 15px;
+
         &:before {
           width: 10px;
         }

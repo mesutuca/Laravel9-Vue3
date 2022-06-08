@@ -1,5 +1,14 @@
 <template>
   <div class="home max-w-7xl">
+    <div>
+      <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select an
+        option</label>
+      <select id="countries" v-model="language"
+              @change="languagechange(language)"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option v-for="(lang,index) in langs" :key="index" :value="lang.slug">{{ lang.title }}</option>
+      </select>
+    </div>
     <DropZone @drop.prevent="imagesInserted" @change="imagesInserted"/>
     <ProgresBar :progress="progress" v-if="isUploading"/>
     <ImageList :items="uploadedImages" @deleteFile="ImageDetele" @statusChange="statusChange"/>
@@ -19,10 +28,6 @@ export default {
       type: String,
       required: true,
     },
-    id: {
-      type: String,
-      required: true
-    }
   },
   data() {
     return {
@@ -30,17 +35,39 @@ export default {
       files: null,
       isUploading: false,
       uploadedImages: [],
-      getFile: []
+      deneme: [],
+      getFile: [],
+      language: 'tr',
+      langs: [
+        {
+          title: 'Türkçe',
+          slug: 'tr'
+        },
+        {
+          title: 'İngilizce',
+          slug: 'en'
+        },
+        {
+          title: 'Arapça',
+          slug: 'ar'
+        }
+      ]
     }
   },
   async created() {
-    await API.get(this.apiUrl + '/' + this.id)
+    await API.get(this.apiUrl + '/' + this.language)
         .then(res => {
           this.getFile = res.data
           this.uploadedImages = res.data
         })
   },
   methods: {
+    async languagechange(lang) {
+      await API.get(this.apiUrl + '/' + lang)
+          .then(res => {
+            this.uploadedImages = res.data
+          })
+    },
     statusChange(file) {
       API.put(this.apiUrl + '/' + file.id, file)
     },
@@ -48,7 +75,7 @@ export default {
       API.delete(this.apiUrl + '/' + id)
           .then(res => {
             if (res.status === 200) {
-              this.uploadedImages.splice(this.uploadedImages.indexOf(index), 1);
+              this.uploadedImages.splice(index, 1);
             }
           })
           .catch(err => {
@@ -64,7 +91,7 @@ export default {
       let formData = new FormData();
       for (let file of this.files) {
         formData.append('file_name[]', file, file.name)
-        formData.append('post_id', this.id)
+        formData.append('language', this.language)
       }
       this.isUploading = true;
       await API.post(this.apiUrl, formData, {
@@ -77,6 +104,7 @@ export default {
           }
         }
       }).then(res => {
+        this.deneme.push('deneme');
         res.data.forEach(element => {
           this.uploadedImages.push({
             id: element.id,

@@ -48,12 +48,6 @@ export default [
     {
         name: 'contact',
         path: '/contact',
-        component: () => import('../pages/Contact'),
-
-    },
-    {
-        name: 'contactm',
-        path: '/contactm',
         component: () => import('../pages/Contact/List'),
         children: [
             {
@@ -62,6 +56,11 @@ export default [
                 component: () => import('../pages/Contact/Add'),
             }
         ]
+    },
+    {
+        name: 'contactform',
+        path: '/contactform',
+        component: () => import('../pages/Contact/Form'),
     },
     {
         name: 'contactdetail',

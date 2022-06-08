@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\CategoriController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactInformationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostImageController;
+use App\Http\Controllers\SliderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +22,9 @@ Route::apiResources([
     '/categories' => CategoriController::class,
     '/posts' => PostController::class,
     '/postimage' => PostImageController::class,
-    '/contact' => ContactInformationController::class,
+    '/contactFoo' => ContactController::class,
+    '/contacts' => ContactInformationController::class,
+    '/slider' => SliderController::class,
 ]);
 
 
