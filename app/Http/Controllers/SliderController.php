@@ -92,6 +92,16 @@ class SliderController extends Controller
             'message' => 'Record not found.'
         ], 404);
     }
+    /*public function show($id)
+    {
+        $data = Slider::find($id);
+        if ($data) {
+            return response()->json($data);
+        }
+        return response()->json([
+            'message' => 'Record not found.'
+        ], 404);
+    }*/
 
     /**
      * Show the form for editing the specified resource.
@@ -99,9 +109,9 @@ class SliderController extends Controller
      * @param \App\Models\Slider $slider
      * @return \Illuminate\Http\Response
      */
-    public function edit(Slider $slider)
+    public function edit($id)
     {
-        //
+        echo "update" . $id;
     }
 
     /**
@@ -113,6 +123,7 @@ class SliderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        echo "update";
         $data = Slider::find($id);
         $store = '/storage/';
         if ($data->file_name !== $request->file_name) {

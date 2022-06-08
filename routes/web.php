@@ -24,7 +24,7 @@ Route::apiResources([
     '/postimage' => PostImageController::class,
     '/contactFoo' => ContactController::class,
     '/contacts' => ContactInformationController::class,
-    '/slider' => SliderController::class,
+    '/sliders' => SliderController::class,
 ]);
 
 

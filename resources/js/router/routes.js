@@ -46,6 +46,11 @@ export default [
         component: () => import('../pages/Post/Images')
     },
     {
+        name: 'ImageEdit',
+        path: '/slider/:id',
+        component: () => import('../pages/Slider/Edit')
+    },
+    {
         name: 'contact',
         path: '/contact',
         component: () => import('../pages/Contact/List'),

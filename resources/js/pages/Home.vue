@@ -1,5 +1,5 @@
 <template>
-  <MultiSlider api-url="/slider"/>
+  <MultiSlider api-url="/sliders"/>
 </template>
 
 <script>

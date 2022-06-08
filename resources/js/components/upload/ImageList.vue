@@ -57,12 +57,12 @@
                     <input v-model="file.status" false-value="off" true-value="on"
                            class="form-check-input appearance-none w-9 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
                            type="checkbox" role="switch"
-                    @change="$emit('statusChange',file)">
+                           @change="$emit('statusChange',file)">
                   </div>
                 </div>
               </td>
               <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                <router-link to="aa" class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100">Düzenle</router-link>
+                <router-link :to="{name: 'ImageEdit', params: {id: file.id}}" class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100">Düzenle</router-link>
                 <button class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100"
                         @click="$emit('deleteFile',index,file.id)">Sil
                 </button>
