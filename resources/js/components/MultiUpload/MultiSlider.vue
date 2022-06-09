@@ -69,6 +69,7 @@ export default {
           })
     },
     statusChange(file) {
+      console.log(file)
       API.put(this.apiUrl + '/' + file.id, file)
     },
     ImageDetele(index, id) {

@@ -48,7 +48,8 @@ export default [
     {
         name: 'ImageEdit',
         path: '/slider/:id',
-        component: () => import('../pages/Slider/Edit')
+        component: () => import('../pages/Slider/Edit'),
+        props: true
     },
     {
         name: 'contact',

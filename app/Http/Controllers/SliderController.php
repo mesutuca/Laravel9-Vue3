@@ -11,11 +11,28 @@ class SliderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index($lang)
     {
-        //
+        $data = Slider::where('language', $lang)->get();
+        $getAllData = [];
+        if ($data) {
+            foreach ($data as $item) {
+                $getAllData[] = [
+                    'id' => $item->id,
+                    'title' => $item->title,
+                    'status' => $item->status,
+                    'src' => $item->file_name,
+                    'language' => $item->language,
+                    'order' => $item->order,
+                ];
+            }
+            return response()->json($getAllData);
+        }
+        return response()->json([
+            'message' => 'Record not found.'
+        ], 404);
     }
 
     /**
@@ -48,8 +65,9 @@ class SliderController extends Controller
             list($fileName, $title) = $postImage;
             $postImage = new Slider();
             $postImage->title = $title;
-            $postImage->file_name = $fileName;
+            $postImage->file_name = $store . $fileName;
             $postImage->status = 'on';
+            $postImage->order = '0';
             $postImage->language = $request->language;
             $postImage->save();
             $getAllData[] = [
@@ -58,7 +76,7 @@ class SliderController extends Controller
                 'status' => $postImage->status,
                 'order' => $postImage->order,
                 'language' => $postImage->language,
-                'src' => $store . $postImage->file_name
+                'src' => $postImage->file_name
             ];
         }
         return response()->json($getAllData);
@@ -70,38 +88,26 @@ class SliderController extends Controller
      * @param \App\Models\Slider $slider
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($lang)
+    public function show($id)
     {
-        $data = Slider::where('language', $lang)->get();
-        $store = '/storage/slider/' . $lang . '/';
-        $getAllData = [];
+
+        $data = Slider::find($id);
+        $store = '/storage/slider/' . $data->language . '/';
         if ($data) {
-            foreach ($data as $item) {
-                $getAllData[] = [
-                    'id' => $item->id,
-                    'title' => $item->title,
-                    'status' => $item->status,
-                    'src' => $store . $item->file_name,
-                    'language' => $item->language,
-                    'order' => $item->order,
-                ];
-            }
+            $getAllData = [
+                'id' => $data->id,
+                'title' => $data->title,
+                'status' => $data->status,
+                'image' => $data->file_name,
+                'language' => $data->language,
+                'order' => $data->order,
+            ];
             return response()->json($getAllData);
         }
         return response()->json([
             'message' => 'Record not found.'
         ], 404);
     }
-    /*public function show($id)
-    {
-        $data = Slider::find($id);
-        if ($data) {
-            return response()->json($data);
-        }
-        return response()->json([
-            'message' => 'Record not found.'
-        ], 404);
-    }*/
 
     /**
      * Show the form for editing the specified resource.
@@ -111,7 +117,7 @@ class SliderController extends Controller
      */
     public function edit($id)
     {
-        echo "update" . $id;
+
     }
 
     /**
@@ -123,31 +129,32 @@ class SliderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        echo "update";
         $data = Slider::find($id);
-        $store = '/storage/';
-        if ($data->file_name !== $request->file_name) {
+        $store = '/storage/slider/' . $request->language . '/';
+        echo $data->file_name;
+        echo "<br>";
+        echo $request->image;
+        exit();
+        if ($data->file_name !== $request->image) {
             $folder_path = public_path() . $data->file_name;
-            $ee = unlink($folder_path);
-            dd($ee);
+            unlink($folder_path);
 
-            /*return Slider::where('id', $id)->update([
+            return Slider::where('id', $id)->update([
                 'title' => $request->title,
-                'file_name' => $request->file_name,
                 'order' => $request->order,
                 'language' => $request->language,
                 'status' => $request->status,
-                'image' => $store . $this->uploadFile($request->slug, $request->image),
-            ]);*/
+                'file_name' => $store . $this->uploadFile($request->language, $request->image)[0],
+            ]);
 
         }
 
         return Slider::where('id', $id)->update([
             'title' => $request->title,
-            'slug' => $request->slug,
+            'order' => $request->order,
             'language' => $request->language,
-            'image' => $request->image,
             'status' => $request->status,
+            'file_name' => $request->image,
         ]);
     }
 
@@ -160,8 +167,7 @@ class SliderController extends Controller
     public function destroy($id)
     {
         $Image = Slider::find($id);
-        $store = '/storage/slider/' . $Image->language . '/';
-        $image_path = public_path() . $store . $Image->file_name;
+        $image_path = public_path() . $Image->file_name;
         $deleteImage = unlink($image_path);
         if ($deleteImage) {
             Slider::destroy($id);
@@ -175,13 +181,13 @@ class SliderController extends Controller
         //  }
     }
 
-    protected function uploadFiles($slug, $request)
+    protected function uploadFiles($lang, $request)
     {
         $uploadedImages = [];
         if ($request->hasFile('file_name')) {
             $images = $request->file('file_name');
             foreach ($images as $image) {
-                $uploadedImages[] = $this->uploadFile($slug, $image);
+                $uploadedImages[] = $this->uploadFile($lang, $image);
             }
         }
         return $uploadedImages;
@@ -198,4 +204,5 @@ class SliderController extends Controller
 //        $uploadedFileName = $image->storeAs('post/' . $slug . '/images/', $fileName, 'public');
         return [$fileName, $fileNameOnly];
     }
+
 }

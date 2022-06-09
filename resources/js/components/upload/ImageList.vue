@@ -36,39 +36,46 @@
               </th>
             </tr>
             </thead>
-            <tbody>
-            <tr v-for="(file,index) in files" :key="file.id">
-              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{
-                  index
-                }}
-              </td>
-              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                <img class="h-12 w-12 bg-white rounded-full border" :src="file.src" :alt="file.title" height="70">
-              </td>
-              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{
-                  file.title
-                }}
-              </td>
-              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">0</td>
-              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">a</td>
-              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                <div class="flex items-center justify-center w-full">
-                  <div class="form-check form-switch">
-                    <input v-model="file.status" false-value="off" true-value="on"
-                           class="form-check-input appearance-none w-9 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
-                           type="checkbox" role="switch"
-                           @change="$emit('statusChange',file)">
-                  </div>
-                </div>
-              </td>
-              <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                <router-link :to="{name: 'ImageEdit', params: {id: file.id}}" class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100">Düzenle</router-link>
-                <button class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100"
-                        @click="$emit('deleteFile',index,file.id)">Sil
-                </button>
-              </td>
-            </tr>
-            </tbody>
+            <!--            <tbody>-->
+            <draggable v-model="files" tag="tbody" item-key="order">
+              <template #item="{ element,index }">
+                <tr>
+                  <!--            <tr v-for="(file,index) in files" :key="file.id">-->
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {{ index }}
+                  </td>
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                    <img class="h-12 w-12 bg-white rounded-full border" :src="element.src" :alt="element.title"
+                         height="70">
+                  </td>
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{
+                      element.title
+                    }}
+                  </td>
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">0</td>
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">a</td>
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    <div class="flex items-center justify-center w-full">
+                      <div class="form-check form-switch">
+                        <input v-model="element.status" false-value="off" true-value="on"
+                               class="form-check-input appearance-none w-9 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
+                               type="checkbox" role="switch"
+                               @change="$emit('statusChange',element)">
+                      </div>
+                    </div>
+                  </td>
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    <router-link :to="{name: 'ImageEdit', params: {id: element.id}}"
+                                 class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100">Düzenle
+                    </router-link>
+                    <button class="px-6 py-2 rounded bg-amber-400 hover:bg-amber-500 text-amber-100"
+                            @click="$emit('deleteFile',index,element.id)">Sil
+                    </button>
+                  </td>
+                </tr>
+              </template>
+            </draggable>
+            <!--            </tbody>-->
           </table>
         </div>
       </div>
@@ -77,9 +84,20 @@
 
 </template>
 <script>
+import draggable from "vuedraggable";
+
 export default {
+  display: "Table",
+  components: {
+    draggable
+  },
   name: 'ImageList',
   props: ['items'],
+  data() {
+    return {
+      dragging: false
+    }
+  },
   computed: {
     files() {
       const items = this.items

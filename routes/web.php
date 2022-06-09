@@ -18,13 +18,19 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/sliders/{id}', [SliderController::class, 'index']);
+Route::put('/sliders/{id}', [SliderController::class, 'update']);
+Route::delete('/sliders/{id}', [SliderController::class, 'destroy']);
+Route::get('/sliders/{id}/detail', [SliderController::class, 'show']);
+Route::post('/sliders', [SliderController::class, 'store']);
+
 Route::apiResources([
     '/categories' => CategoriController::class,
     '/posts' => PostController::class,
     '/postimage' => PostImageController::class,
     '/contactFoo' => ContactController::class,
     '/contacts' => ContactInformationController::class,
-    '/sliders' => SliderController::class,
 ]);
 
 

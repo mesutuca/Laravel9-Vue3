@@ -9,7 +9,14 @@
       <form @submit.prevent="handleChange(getData.id)"
             enctype="multipart/form-data"
             class="relative h-full flex flex-col justify-center space-y-8 sm:space-y-5 lg:space-y-8 xl:space-y-5 xl:px-5">
-        <img v-if="getData.image" :src="getData.image" alt="">
+        <img v-if="getData.image" :src="getData.image" :alt="getData.title">
+        <div
+            class="flex flex-col justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
+          <div class="flex flex-row w-full">
+            <label for="" class="w-1/5">Title</label>
+            <input type="text" class="w-4/5 border rounded" v-model="getData.title" :disabled="!editForm">
+          </div>
+        </div>
         <div
             class="flex justify-between items-center sm:bg-white sm:rounded-lg sm:ring-1 sm:ring-slate-700/5 sm:shadow sm:p-3 lg:bg-transparent lg:rounded-none lg:ring-0 lg:shadow-none lg:p-0 xl:bg-white xl:rounded-lg xl:ring-1 xl:ring-slate-700/5 xl:shadow xl:p-3">
           <div class="flex flex-row w-full">
@@ -70,20 +77,20 @@ export default {
       const config = {headers: {'content-type': 'multipart/form-data'}}
       const form = new FormData();
       form.append('title', this.getData.title);
-      form.append('slug', this.getData.slug)
       form.append('language', this.getData.language)
+      form.append('order', this.getData.order)
       form.append('image', this.imageFile ? this.imageFile : this.getData.image)
       form.append('status', this.getData.status)
       form.append('_method', 'PUT')
-      await API.post('/categories' + '/' + id, form)
+      await API.post('/sliders' + '/' + id, form)
     }
   },
   created() {
-    API.patch('/sliders/' + this.id)
+    API.get('/sliders/' + this.id + '/detail')
         .then(res => {
           this.getData = res.data
         })
-        // .catch(err => this.$router.push({name: 'error'}))
+    // .catch(err => this.$router.push({name: 'error'}))
   }
 }
 </script>
