@@ -2,7 +2,7 @@
   <div class="home max-w-7xl">
     <DropZone @drop.prevent="imagesInserted" @change="imagesInserted"/>
     <ProgresBar :progress="progress" v-if="isUploading"/>
-    <ImageList :items="uploadedImages" @deleteFile="ImageDetele" @statusChange="statusChange"/>
+    <ImageList :items="uploadedImages" @deleteFile="ImageDetele" @statusChange="statusChange" @orderChange="blabla"/>
   </div>
 </template>
 
@@ -41,6 +41,9 @@ export default {
         })
   },
   methods: {
+    blabla(ee) {
+      console.log(ee)
+    },
     statusChange(file) {
       API.put(this.apiUrl + '/' + file.id, file)
     },

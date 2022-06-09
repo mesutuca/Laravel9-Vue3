@@ -37,7 +37,7 @@
             </tr>
             </thead>
             <!--            <tbody>-->
-            <draggable v-model="files" tag="tbody" item-key="order">
+            <draggable v-model="files" tag="tbody" item-key="order" @change="log(files)" @end="$emit('orderChange','asd')">
               <template #item="{ element,index }">
                 <tr>
                   <!--            <tr v-for="(file,index) in files" :key="file.id">-->
@@ -48,9 +48,8 @@
                     <img class="h-12 w-12 bg-white rounded-full border" :src="element.src" :alt="element.title"
                          height="70">
                   </td>
-                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{
-                      element.title
-                    }}
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {{ element.title }}
                   </td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">0</td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">a</td>
@@ -104,6 +103,11 @@ export default {
       return items
     }
   },
+  methods:{
+    log: function(evt) {
+      window.console.log(evt);
+    }
+  }
 }
 </script>
 <!--
