@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::put('/sliders/updateAll', [SliderController::class, 'updateAll']);
 Route::get('/sliders/{id}', [SliderController::class, 'index']);
 Route::put('/sliders/{id}', [SliderController::class, 'update']);
 Route::delete('/sliders/{id}', [SliderController::class, 'destroy']);

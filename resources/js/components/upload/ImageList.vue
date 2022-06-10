@@ -9,6 +9,7 @@
             </div>
           </div>
         </div>
+        {{ itemsnew }}
         <div class="block w-full overflow-x-auto">
           <table class="items-center w-full bg-transparent border-collapse">
             <thead>
@@ -37,7 +38,7 @@
             </tr>
             </thead>
             <!--            <tbody>-->
-            <draggable v-model="files" tag="tbody" item-key="order" @change="log(files)" @end="$emit('orderChange','asd')">
+            <draggable v-model="files" tag="tbody" item-key="order" @change="log">
               <template #item="{ element,index }">
                 <tr>
                   <!--            <tr v-for="(file,index) in files" :key="file.id">-->
@@ -84,6 +85,7 @@
 </template>
 <script>
 import draggable from "vuedraggable";
+import API from "../../services";
 
 export default {
   display: "Table",
@@ -94,19 +96,28 @@ export default {
   props: ['items'],
   data() {
     return {
-      dragging: false
+      itemsnew: [],
+      dragging: false,
     }
   },
   computed: {
     files() {
       const items = this.items
+      this.itemsnew = items
       return items
     }
   },
-  methods:{
-    log: function(evt) {
-      window.console.log(evt);
-    }
+  methods: {
+    log() {
+      this.itemsnew.map((test, index) => {
+        test.order = index + 1
+      })
+      API.put('/sliders/updateAll', {
+        testim: this.itemsnew
+      }).then(res => {
+        console.log(res)
+      })
+    },
   }
 }
 </script>

@@ -124,6 +124,17 @@ class SliderController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateAll(Request $request)
+    {
+        dd($request->testim);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
      * @param \App\Models\Slider $slider
      * @return \Illuminate\Http\Response
      */
@@ -157,6 +168,7 @@ class SliderController extends Controller
             'file_name' => $request->image,
         ]);
     }
+
 
     /**
      * Remove the specified resource from storage.

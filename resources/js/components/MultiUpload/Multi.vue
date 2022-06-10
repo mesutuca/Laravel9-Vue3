@@ -2,7 +2,7 @@
   <div class="home max-w-7xl">
     <DropZone @drop.prevent="imagesInserted" @change="imagesInserted"/>
     <ProgresBar :progress="progress" v-if="isUploading"/>
-    <ImageList :items="uploadedImages" @deleteFile="ImageDetele" @statusChange="statusChange" @orderChange="blabla"/>
+    <ImageList :items="uploadedImages" @deleteFile="ImageDetele" @statusChange="statusChange"/>
   </div>
 </template>
 
