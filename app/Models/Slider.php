@@ -9,5 +9,7 @@ class Slider extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['order'];
+    protected $fillable = [
+        'order',
+    ];
 }

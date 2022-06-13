@@ -9,7 +9,8 @@
             </div>
           </div>
         </div>
-
+        <div style="background: blue">{{ items }}</div>
+        <div style="background: red">{{ itemsnew }}</div>
         <div class="block w-full overflow-x-auto">
           <table class="items-center w-full bg-transparent border-collapse">
             <thead>
@@ -44,7 +45,7 @@
                 <tr>
                   <!--            <tr v-for="(file,index) in files" :key="file.id">-->
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {{ index++}}
+                    {{ element.id }}
                   </td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                     <img class="h-12 w-12 bg-white rounded-full border" :src="element.src" :alt="element.title"
@@ -53,9 +54,7 @@
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     {{ element.title }}
                   </td>
-                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {{ element.order }}
-                  </td>
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ element.order }}</td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">a</td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <div class="flex items-center justify-center w-full">
@@ -84,88 +83,79 @@
       </div>
     </div>
   </section>
+
 </template>
-<script>
+
+
+<script setup>
 import draggable from "vuedraggable";
 import API from "../../services";
-
-export default {
-  display: "Table",
-  components: {
-    draggable
-  },
-  name: 'ImageList',
-  props: ['items'],
-  data() {
-    return {
-      itemsnew: [],
-      dragging: false,
-      activeNames: []
-    }
-  },
-  created() {
-    this.itemsnew = this.items
-  },
-  methods: {
-    // handleChange() {
-    //   console.log('changed');
-    // },
-    // inputChanged(value) {
-    //   this.activeNames = value;
-    // },
-    // getComponentData() {
-    //   return {
-    //     onChange: this.handleChange,
-    //     onInput: this.inputChanged,
-    //     wrap: true,
-    //     value: this.activeNames
-    //   };
-    // },
-    log() {
-      this.itemsnew.map((test, index) => {
-        test.order = index + 1
-      })
-      API.put('/sliders/updateAll', {
-        testimonials: this.itemsnew
-      }).then(res => {
-        console.log(res)
-      })
-    },
-  },
-  watch: {
-    items: {
-
-      immediate: true,
-      handler() {
-        this.itemsnew = this.items
-        console.log('aaa')
-      },
-      deep:true
-    },
-    itemsnew: {
-      handler() {
-        console.log('bbb')
-      },
-      immediate: true,
-    },
-  }
-}
-</script>
-<!--
-<script setup>
-import {getFileSize} from '../../utilities/file'
+import {ref, computed, watch,watchEffect} from "vue";
 
 const props = defineProps({
   items: Object,
-  progress: String
 })
+const itemsnew = ref()
 
-function progressBar(index) {
-  return props.progress[index] + '%'
+watch(() => [...props.items], (currentValue, oldValue) => {
+  itemsnew.value = currentValue
+});
+// const items = computed(() => {
+//   return itemsnew.value = props.items;
+// })
+
+
+// watchEffect(async () => itemsnew.value = await props.items)
+
+function log() {
+  itemsnew.value.map((testimonial, index) => {
+    testimonial.order = index + 1;
+  })
+  API.put('/sliders/updateAll', {
+    testimonials: itemsnew.value
+  }).then((response) => {
+    console.log(response)
+  })
 }
+
 </script>
--->
+
 <style scoped lang="scss">
+
+.button {
+  margin-top: 35px;
+}
+
+.flip-list-move {
+  transition: transform 0.5s;
+}
+
+.no-move {
+  transition: transform 0s;
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+
+.sortable-ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+
+.list-group {
+  min-height: 20px;
+}
+
+.list-group-item {
+  cursor: move;
+}
+
+.list-group-item i {
+  cursor: pointer;
+}
+
 .form-check-input {
   background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22-4 -4 8 8%22%3E%3Ccircle r=%223%22 fill=%22%23fff%22/%3E%3C/svg%3E");
   background-position: 0;

@@ -80,6 +80,11 @@ export default [
         component: () => import('../pages/Deneme')
     },
     {
+        name: 'rulet',
+        path: '/rulet',
+        component: () => import('../pages/rulet')
+    },
+    {
         name: 'error',
         path: '/:pathMatch(.*)*',
         redirect: '/'

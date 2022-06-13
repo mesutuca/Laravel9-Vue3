@@ -35,7 +35,6 @@ export default {
       files: null,
       isUploading: false,
       uploadedImages: [],
-      deneme: [],
       getFile: [],
       language: 'tr',
       langs: [
@@ -73,6 +72,9 @@ export default {
       API.put(this.apiUrl + '/' + file.id, file)
     },
     ImageDetele(index, id) {
+      console.log('index', index)
+      console.log('id', id)
+
       API.delete(this.apiUrl + '/' + id)
           .then(res => {
             if (res.status === 200) {

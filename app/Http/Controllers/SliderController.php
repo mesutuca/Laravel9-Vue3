@@ -128,6 +128,7 @@ class SliderController extends Controller
      */
     public function updateAll(Request $request)
     {
+//        dd($request->testim);
         $testimonials = Slider::all();
 
         foreach ($testimonials as $testimonial) {
@@ -141,6 +142,7 @@ class SliderController extends Controller
         }
 
         return response('Update Successful.', 200);
+
     }
 
     /**
