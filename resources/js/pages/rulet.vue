@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-[60rem] flex-row space-y-8">
+  <div class="grid grid-cols-2 w-full justify-center gap-4 w-[60rem]">
     <div class="w-full">
       <div class="flex flex-row space-x-10">
         <div class="hot flex flex-col ">
@@ -44,6 +44,11 @@
       </div>
       <span>Picked: {{ picked }}</span>
       {{ gelensayilar }}
+      <div class="grid grid-cols-13 w-full justify-center text-center">
+        <div class="border text-2xl text-white" :class="colordata[`${list}`]"
+             v-for="list in jsondata">{{ list }}
+        </div>
+      </div>
     </div>
     <div class="w-full">
       <div class="rulet border">
@@ -262,9 +267,7 @@
       </div>
     </div>
   </div>
-  <button @click="encok(20)">btonn</button>
-  {{ jsondata }}
-  <!--  document.querySelector("#root > div.app&#45;&#45;2c5f6 > div > div > div.footerWrapper&#45;&#45;3a742 > div > div.footerRight&#45;&#45;5d28e > div > div > div.transitionContainer&#45;&#45;e7b12.show&#45;&#45;cbd97 > div > div > div.statistics&#45;&#45;e3dd7 > div > div > div > div.contentWrapper&#45;&#45;b308f > div.contentElement&#45;&#45;e8ecb > div.numbers&#45;&#45;2435c.statistics&#45;&#45;adb67 > div:nth-child(31) > div")-->
+  <button @click="encok()">btonn</button>
 </template>
 
 <script>
@@ -276,87 +279,93 @@ export default {
     return {
       jsondata: jsond,
       picked: 'true',
-      hot: [
-        {
-          number: '2'
-        },
-        {
-          number: '11'
-        },
-        {
-          number: '23'
-        },
-        {
-          number: '29'
-        },
-        {
-          number: '33'
-        }
-      ],
-      cold: [
-        {
-          number: '0'
-        },
-        {
-          number: '20'
-        },
-        {
-          number: '1'
-        },
-        {
-          number: '3'
-        },
-        {
-          number: '4'
-        }
-      ],
-      gelensayilar: []
+      hot: [],
+      cold: [],
+      gelensayilar: [],
+      colordata: {
+        0: 'bg-green-700',
+        1: 'bg-red-700',
+        2: 'bg-black',
+        3: 'bg-red-700',
+        4: 'bg-black',
+        5: 'bg-red-700',
+        6: 'bg-black',
+        7: 'bg-red-700',
+        8: 'bg-black',
+        9: 'bg-red-700',
+        10: 'bg-black',
+        11: 'bg-black',
+        12: 'bg-red-700',
+        13: 'bg-black',
+        14: 'bg-red-700',
+        15: 'bg-black',
+        16: 'bg-red-700',
+        17: 'bg-black',
+        18: 'bg-red-700',
+        19: 'bg-red-700',
+        20: 'bg-black',
+        21: 'bg-red-700',
+        22: 'bg-black',
+        23: 'bg-red-700',
+        24: 'bg-black',
+        25: 'bg-red-700',
+        26: 'bg-black',
+        27: 'bg-red-700',
+        28: 'bg-black',
+        29: 'bg-black',
+        30: 'bg-red-700',
+        31: 'bg-black',
+        32: 'bg-red-700',
+        33: 'bg-black',
+        34: 'bg-red-700',
+        35: 'bg-black',
+        36: 'bg-red-700',
+      }
     }
   },
   watch: {},
   methods: {
-    listArray(arr, order) {
-      let itemCount = [];
-      arr.forEach(function (x) {
-        itemCount[x] = (itemCount[x] || 0) + 1;
-      });
-
-      // olusturdugumuz objeyi ters siralamak icin diziye donusturuyoruz.
-      let countsSortable = [];
-      for (let i in itemCount) {
-        countsSortable.push([itemCount[i], i])
+    encok() {
+      let map = new Map();
+      for (let i = 0; i < this.jsondata.length; i++) {
+        let count = map.has(this.jsondata[i]) ? map.get(this.jsondata[i]) + 1 : 1;
+        map.set(this.jsondata[i], count)
       }
 
-      countsSortable.sort(function (a, b) {
+      /* Convert the Map into an array of arrays and sort by the 'count'*/
+      const sorted = [...map].sort((first, second) => first[1] - second[1]);
 
-        if (order === 'desc') {
-          return b[i] - a[i];
+      /* first five element are the ones that occur the least */
+      let fiveLeast = sorted.slice(0, 5);
 
-        } else {
+      /* last five are the ones that occur the most */
+      let fiveMost = sorted.slice(-5);
+      fiveLeast.map(e => this.cold.push({
+        number: e[0]
+      }))
 
-          return b[i] - a[i];
-
-        }
-
-      });
-
-      return countsSortable;
-    },
-    encok(ee) {
-      this.cold.filter(post => {
-        console.log(post.number.includes(ee))
-      })
+      fiveMost.map(e => this.hot.push({
+        number: e[0]
+      }))
+      /* drop the .map(e => e[0]) part if you want to see the number of times the respective elements occur */
+      console.log("These five occur the least: [" + fiveLeast.map(e => e[0]) + "]");
+      console.log("These five occur the most: [" + fiveMost.map(e => e[0]) + "]");
     },
     gelenSayi(event) {
-      console.log(this.jsondata)
+
       const element = event.target;
       this.picked = !this.picked
       const number = element.getAttribute('data-number');
       const color = element.getAttribute('data-color');
-      this.gelensayilar.push({
-        sayi: number,
-        color: color
-      })
+      // this.gelensayilar.push({
+      //   sayi: number,
+      //   color: color
+      // })
+      this.jsondata.push(0,1,3,36,45,45,45,4,54,54,54)
+      // this.jsondata.push(number)
+      // let id = this.jsondata.length + 1
+      // const i = Math.round(Math.random() * this.jsondata.length)
+      // this.jsondata.splice(i, 0, id)
 
     },
     isNumber: function (evt) {
@@ -373,5 +382,7 @@ export default {
 </script>
 
 <style scoped>
-
+.grid-cols-13 {
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+}
 </style>
