@@ -105,13 +105,13 @@ export default {
           }
         }
       }).then(res => {
-        this.deneme.push('deneme');
         res.data.forEach(element => {
           this.uploadedImages.push({
             id: element.id,
             title: element.title,
             src: element.src,
             status: element.status,
+            order: element.order,
           })
         })
 

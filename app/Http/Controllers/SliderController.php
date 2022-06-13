@@ -15,7 +15,7 @@ class SliderController extends Controller
      */
     public function index($lang)
     {
-        $data = Slider::where('language', $lang)->get();
+        $data = Slider::where('language', $lang)->orderBy('order','ASC')->get();
         $getAllData = [];
         if ($data) {
             foreach ($data as $item) {
@@ -128,7 +128,19 @@ class SliderController extends Controller
      */
     public function updateAll(Request $request)
     {
-        dd($request->testim);
+        $testimonials = Slider::all();
+
+        foreach ($testimonials as $testimonial) {
+            $testimonial->timestamps = false;
+            $id = $testimonial->id;
+            foreach ($request->testimonials as $testimonialFrontEnd) {
+                if ($testimonialFrontEnd['id'] == $id) {
+                    $testimonial->update(['order' => $testimonialFrontEnd['order']]);
+                }
+            }
+        }
+
+        return response('Update Successful.', 200);
     }
 
     /**

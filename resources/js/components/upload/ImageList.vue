@@ -9,7 +9,7 @@
             </div>
           </div>
         </div>
-        {{ itemsnew }}
+
         <div class="block w-full overflow-x-auto">
           <table class="items-center w-full bg-transparent border-collapse">
             <thead>
@@ -38,12 +38,13 @@
             </tr>
             </thead>
             <!--            <tbody>-->
-            <draggable v-model="files" tag="tbody" item-key="order" @change="log">
+            <!-- Detaylı kontrol edilelebilir  https://github.com/SortableJS/vue.draggable.next#componentdata -->
+            <draggable v-model="itemsnew" tag="tbody" item-key="order" @change="log">
               <template #item="{ element,index }">
                 <tr>
                   <!--            <tr v-for="(file,index) in files" :key="file.id">-->
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {{ index }}
+                    {{ index++}}
                   </td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                     <img class="h-12 w-12 bg-white rounded-full border" :src="element.src" :alt="element.title"
@@ -52,7 +53,9 @@
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     {{ element.title }}
                   </td>
-                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">0</td>
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {{ element.order }}
+                  </td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">a</td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <div class="flex items-center justify-center w-full">
@@ -81,7 +84,6 @@
       </div>
     </div>
   </section>
-
 </template>
 <script>
 import draggable from "vuedraggable";
@@ -98,25 +100,53 @@ export default {
     return {
       itemsnew: [],
       dragging: false,
+      activeNames: []
     }
   },
-  computed: {
-    files() {
-      const items = this.items
-      this.itemsnew = items
-      return items
-    }
+  created() {
+    this.itemsnew = this.items
   },
   methods: {
+    // handleChange() {
+    //   console.log('changed');
+    // },
+    // inputChanged(value) {
+    //   this.activeNames = value;
+    // },
+    // getComponentData() {
+    //   return {
+    //     onChange: this.handleChange,
+    //     onInput: this.inputChanged,
+    //     wrap: true,
+    //     value: this.activeNames
+    //   };
+    // },
     log() {
       this.itemsnew.map((test, index) => {
         test.order = index + 1
       })
       API.put('/sliders/updateAll', {
-        testim: this.itemsnew
+        testimonials: this.itemsnew
       }).then(res => {
         console.log(res)
       })
+    },
+  },
+  watch: {
+    items: {
+
+      immediate: true,
+      handler() {
+        this.itemsnew = this.items
+        console.log('aaa')
+      },
+      deep:true
+    },
+    itemsnew: {
+      handler() {
+        console.log('bbb')
+      },
+      immediate: true,
     },
   }
 }
