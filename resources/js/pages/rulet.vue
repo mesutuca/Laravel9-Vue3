@@ -361,7 +361,7 @@ export default {
       //   sayi: number,
       //   color: color
       // })
-      this.jsondata.push(0,1,3,36,45,45,45,4,54,54,54)
+      this.jsondata.unshift(number)
       // this.jsondata.push(number)
       // let id = this.jsondata.length + 1
       // const i = Math.round(Math.random() * this.jsondata.length)

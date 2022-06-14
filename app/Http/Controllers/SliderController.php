@@ -23,7 +23,7 @@ class SliderController extends Controller
                     'id' => $item->id,
                     'title' => $item->title,
                     'status' => $item->status,
-                    'src' => $item->file_name,
+                    'image' => $item->file_name,
                     'language' => $item->language,
                     'order' => $item->order,
                 ];
@@ -76,7 +76,7 @@ class SliderController extends Controller
                 'status' => $postImage->status,
                 'order' => $postImage->order,
                 'language' => $postImage->language,
-                'src' => $postImage->file_name
+                'image' => $postImage->file_name
             ];
         }
         return response()->json($getAllData);
@@ -156,10 +156,6 @@ class SliderController extends Controller
     {
         $data = Slider::find($id);
         $store = '/storage/slider/' . $request->language . '/';
-        echo $data->file_name;
-        echo "<br>";
-        echo $request->image;
-        exit();
         if ($data->file_name !== $request->image) {
             $folder_path = public_path() . $data->file_name;
             unlink($folder_path);

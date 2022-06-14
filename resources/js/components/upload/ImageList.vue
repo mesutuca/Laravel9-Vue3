@@ -9,12 +9,22 @@
             </div>
           </div>
         </div>
-        <div style="background: blue">{{ items }}</div>
-        <div style="background: red">{{ itemsnew }}</div>
+        <div style="background: blue;display: none">{{ items }}</div>
+        <div style="background: red;display: none">{{ itemsnew }}</div>
         <div class="block w-full overflow-x-auto">
           <table class="items-center w-full bg-transparent border-collapse">
             <thead>
             <tr>
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">
+                <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" @click="selectAll">
+              </th>
+              <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20" fill="currentColor" class="bi bi-justify"
+                     viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                        d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+              </th>
               <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">
                 İD
               </th>
@@ -40,21 +50,33 @@
             </thead>
             <!--            <tbody>-->
             <!-- Detaylı kontrol edilelebilir  https://github.com/SortableJS/vue.draggable.next#componentdata -->
-            <draggable v-model="itemsnew" tag="tbody" item-key="order" @change="log">
+            <draggable v-model="itemsnew" handle=".handle" tag="tbody" item-key="order" @change="log" :move="moveeee">
               <template #item="{ element,index }">
                 <tr>
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" v-model="selected" :value="element.id" number>
+                  </td>
+                  <td class="handle cursor-move border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="20" fill="currentColor" class="bi bi-justify"
+                         viewBox="0 0 16 16">
+                      <path fill-rule="evenodd"
+                            d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                  </td>
                   <!--            <tr v-for="(file,index) in files" :key="file.id">-->
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     {{ element.id }}
                   </td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
-                    <img class="h-12 w-12 bg-white rounded-full border" :src="element.src" :alt="element.title"
+                    <img class="h-12 w-12 bg-white rounded-full border" :src="element.image" :alt="element.title"
                          height="70">
                   </td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     {{ element.title }}
                   </td>
-                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{{ element.order }}</td>
+                  <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {{ element.order }}
+                  </td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">a</td>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <div class="flex items-center justify-center w-full">
@@ -90,12 +112,15 @@
 <script setup>
 import draggable from "vuedraggable";
 import API from "../../services";
-import {ref, computed, watch,watchEffect} from "vue";
+import {ref, computed, watch, watchEffect, defineEmits} from "vue";
 
 const props = defineProps({
   items: Object,
 })
 const itemsnew = ref()
+const emit = defineEmits(['orderChange'])
+const selected = ref([])
+const selectAT = ref([])
 
 watch(() => [...props.items], (currentValue, oldValue) => {
   itemsnew.value = currentValue
@@ -104,18 +129,21 @@ watch(() => [...props.items], (currentValue, oldValue) => {
 //   return itemsnew.value = props.items;
 // })
 
-
+function selectAll() {
+  
+}
 // watchEffect(async () => itemsnew.value = await props.items)
-
 function log() {
+
   itemsnew.value.map((testimonial, index) => {
     testimonial.order = index + 1;
   })
-  API.put('/sliders/updateAll', {
-    testimonials: itemsnew.value
-  }).then((response) => {
-    console.log(response)
-  })
+  emit('orderChange', itemsnew.value)
+
+}
+
+function moveeee(evt) {
+  // console.log(evt)
 }
 
 </script>
