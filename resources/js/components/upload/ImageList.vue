@@ -11,12 +11,15 @@
         </div>
         <div style="background: blue;display: none">{{ items }}</div>
         <div style="background: red;display: none">{{ itemsnew }}</div>
+        <div @click="deleteSelect" type="button">Seçili Verileri Sil</div>
         <div class="block w-full overflow-x-auto">
           <table class="items-center w-full bg-transparent border-collapse">
             <thead>
             <tr>
               <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">
-                <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" @click="selectAll">
+                <input
+                    class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    type="checkbox" v-model="selectAll" :indeterminate.prop="deneme">
               </th>
               <th class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">
                 <svg xmlns="http://www.w3.org/2000/svg" height="20" fill="currentColor" class="bi bi-justify"
@@ -54,7 +57,9 @@
               <template #item="{ element,index }">
                 <tr>
                   <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    <input class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="checkbox" v-model="selected" :value="element.id" number>
+                    <input
+                        class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                        type="checkbox" v-model="selected" :value="element.id" number>
                   </td>
                   <td class="handle cursor-move border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <svg xmlns="http://www.w3.org/2000/svg" height="20" fill="currentColor" class="bi bi-justify"
@@ -82,7 +87,7 @@
                     <div class="flex items-center justify-center w-full">
                       <div class="form-check form-switch">
                         <input v-model="element.status" false-value="off" true-value="on"
-                               class="form-check-input appearance-none w-9 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
+                               class="form-check-input-switch appearance-none w-9 rounded-full float-left h-5 align-top bg-white bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm"
                                type="checkbox" role="switch"
                                @change="$emit('statusChange',element)">
                       </div>
@@ -120,7 +125,6 @@ const props = defineProps({
 const itemsnew = ref()
 const emit = defineEmits(['orderChange'])
 const selected = ref([])
-const selectAT = ref([])
 
 watch(() => [...props.items], (currentValue, oldValue) => {
   itemsnew.value = currentValue
@@ -128,10 +132,32 @@ watch(() => [...props.items], (currentValue, oldValue) => {
 // const items = computed(() => {
 //   return itemsnew.value = props.items;
 // })
+const deneme = ref(false);
 
-function selectAll() {
-  
-}
+const selectAll = computed(({
+  get() {
+    if (selected.value.length === props.items.length) {
+      deneme.value = false
+      return true
+    } else if (selected.value.length > 0 && selected.value.length !== props.items.length) {
+      deneme.value = true
+    } else {
+      deneme.value = false
+      return false
+    }
+    // return props.items ? selected.value.length === props.items.length : false;
+  },
+  set(value) {
+    let checked = [];
+    if (value) {
+      props.items.forEach(function (item) {
+        checked.push(item.id);
+      });
+    }
+    selected.value = checked;
+  }
+}))
+
 // watchEffect(async () => itemsnew.value = await props.items)
 function log() {
 
@@ -141,7 +167,13 @@ function log() {
   emit('orderChange', itemsnew.value)
 
 }
-
+function deleteSelect() {
+  API.put('/sliders/deleteAll', {
+    testimonials: selected.value
+  }).then((response) => {
+    console.log(response)
+  })
+}
 function moveeee(evt) {
   // console.log(evt)
 }
@@ -184,7 +216,7 @@ function moveeee(evt) {
   cursor: pointer;
 }
 
-.form-check-input {
+.form-check-input-switch {
   background-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22-4 -4 8 8%22%3E%3Ccircle r=%223%22 fill=%22%23fff%22/%3E%3C/svg%3E");
   background-position: 0;
   transition: background-position .15s ease-in-out;
@@ -193,6 +225,30 @@ function moveeee(evt) {
     background-position: 100%;
     background-color: #0d6efd;
     border-color: #0d6efd;
+  }
+}
+
+.form-check-input-in {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e");
+
+  &:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+}
+
+.form-check-input {
+
+  &:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+
+  &:indeterminate {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e");
   }
 }
 

@@ -15,7 +15,7 @@ class SliderController extends Controller
      */
     public function index($lang)
     {
-        $data = Slider::where('language', $lang)->orderBy('order','ASC')->get();
+        $data = Slider::where('language', $lang)->orderBy('order', 'ASC')->get();
         $getAllData = [];
         if ($data) {
             foreach ($data as $item) {
@@ -143,6 +143,27 @@ class SliderController extends Controller
 
         return response('Update Successful.', 200);
 
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteAll(Request $request)
+    {
+        foreach ($request->testimonials as $testimonial) {
+            $Image = Slider::find($testimonial);
+            $image_path = public_path() . $Image->file_name;
+            $deleteImage = unlink($image_path);
+            if ($deleteImage) {
+                Slider::destroy($testimonial);
+                return response()->json([
+                    'message' => 'Fotoğraf Silindi'
+                ]);
+            }
+        }
     }
 
     /**

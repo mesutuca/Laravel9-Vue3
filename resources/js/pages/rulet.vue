@@ -5,13 +5,14 @@
         <div class="hot flex flex-col ">
           <label for="">Sıcak Sayılar</label>
           <div>
-            <input class="shadow appearance-none border rounded w-10 py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                   type="text"
-                   @keypress="isNumber($event)"
-                   data-number=""
-                   data-color=""
-                   min="0" max="36" maxlength="2"
-                   v-for="listhot in hot" :key="listhot" v-model.number="listhot.number"
+            <input
+                class="shadow appearance-none border rounded w-10 py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text"
+                @keypress="isNumber($event)"
+                data-number=""
+                data-color=""
+                min="0" max="36" maxlength="2"
+                v-for="listhot in hot" :key="listhot" v-model.number="listhot.number"
             >
           </div>
         </div>
@@ -42,8 +43,6 @@
           </div>
         </div>
       </div>
-      <span>Picked: {{ picked }}</span>
-      {{ gelensayilar }}
       <div class="grid grid-cols-13 w-full justify-center text-center">
         <div class="border text-2xl text-white" :class="colordata[`${list}`]"
              v-for="list in jsondata">{{ list }}
@@ -53,214 +52,251 @@
     <div class="w-full">
       <div class="rulet border">
         <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-green-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="green"
-               data-number="0">0
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-green-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="green"
+              data-number="0">0
           </div>
         </div>
         <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="1">1
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="1">1
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="2">2
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="2">2
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="3">3
-          </div>
-        </div>
-        <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="4">4
-          </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="5">5
-          </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="6">6
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="3">3
           </div>
         </div>
         <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="7">7
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="4">4
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="8">8
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="5">5
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="9">9
-          </div>
-        </div>
-        <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="10">10
-          </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="11">11
-          </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="12">12
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="6">6
           </div>
         </div>
         <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="13">13
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="7">7
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="14">14
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="8">8
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="15">15
-          </div>
-        </div>
-        <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="16">16
-          </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="17">17
-          </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="18">18
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="9">9
           </div>
         </div>
         <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="19">19
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="10">10
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="20">20
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="11">11
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="21">21
-          </div>
-        </div>
-        <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="22">22
-          </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="23">23
-          </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="24">24
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="12">12
           </div>
         </div>
         <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="25">25
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="13">13
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="26">26
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="14">14
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="27">27
-          </div>
-        </div>
-        <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="28">28
-          </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="29">29
-          </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="30">30
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="15">15
           </div>
         </div>
         <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="31">31
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="16">16
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="32">32
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="17">17
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="33">33
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="18">18
           </div>
         </div>
         <div class="flex w-full flex-row">
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="34">34
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="19">19
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="black"
-               data-number="35">35
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="20">20
           </div>
-          <div class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
-               @click="gelenSayi($event)"
-               data-color="red"
-               data-number="36">36
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="21">21
+          </div>
+        </div>
+        <div class="flex w-full flex-row">
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="22">22
+          </div>
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="23">23
+          </div>
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="24">24
+          </div>
+        </div>
+        <div class="flex w-full flex-row">
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="25">25
+          </div>
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="26">26
+          </div>
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="27">27
+          </div>
+        </div>
+        <div class="flex w-full flex-row">
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="28">28
+          </div>
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="29">29
+          </div>
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="30">30
+          </div>
+        </div>
+        <div class="flex w-full flex-row">
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="31">31
+          </div>
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="32">32
+          </div>
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="33">33
+          </div>
+        </div>
+        <div class="flex w-full flex-row">
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="34">34
+          </div>
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-black h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="black"
+              data-number="35">35
+          </div>
+          <div
+              class="flex w-full border border-white justify-center items-center text-center text-white bg-red-700 h-[4rem] font-bold text-xl"
+              @click="gelenSayi($event)"
+              data-color="red"
+              data-number="36">36
           </div>
         </div>
 
@@ -348,24 +384,18 @@ export default {
         number: e[0]
       }))
       /* drop the .map(e => e[0]) part if you want to see the number of times the respective elements occur */
-      console.log("These five occur the least: [" + fiveLeast.map(e => e[0]) + "]");
-      console.log("These five occur the most: [" + fiveMost.map(e => e[0]) + "]");
+      // console.log("These five occur the least: [" + fiveLeast.map(e => e[0]) + "]");
+      // console.log("These five occur the most: [" + fiveMost.map(e => e[0]) + "]");
+
     },
     gelenSayi(event) {
-
       const element = event.target;
       this.picked = !this.picked
       const number = element.getAttribute('data-number');
-      const color = element.getAttribute('data-color');
-      // this.gelensayilar.push({
-      //   sayi: number,
-      //   color: color
-      // })
+      if (number === 33) {
+        console.log("10")
+      }
       this.jsondata.unshift(number)
-      // this.jsondata.push(number)
-      // let id = this.jsondata.length + 1
-      // const i = Math.round(Math.random() * this.jsondata.length)
-      // this.jsondata.splice(i, 0, id)
 
     },
     isNumber: function (evt) {
